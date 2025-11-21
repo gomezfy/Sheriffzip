@@ -4,15 +4,15 @@
       "silver": 494150,
       "saloon_token": 500000,
       "fishing_rod": 1,
-      "premium_bait": 5,
+      "premium_bait": 4,
       "basic_bait": 50,
-      "catfish": 1,
+      "catfish": 2,
       "wild_salmon": 1
     },
-    "weight": 9.271,
+    "weight": 10.761,
     "maxWeight": 100,
     "itemDurability": {
-      "fishing_rod": 36
+      "fishing_rod": 35
     },
     "purchasedBackpacks": []
   }

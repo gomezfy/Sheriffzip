@@ -14,39 +14,39 @@ import { transactionLock } from "../../../utils/transactionLock";
 
 // Mensagens imersivas de sucesso
 const SUCCESS_MESSAGES = [
-  "🎣 O peixe puxou! Mantendo a linha firme...",
-  "💪 Boa! O peixe entrou na zona! Aguente firme!",
-  "⚡ Acerto! O peixe está resistindo!",
-  "🌊 Perfeito! O peixe se mexeu na zona!",
-  "🎯 Excelente timing! O peixe avançou!",
-  "🪝 Fisga perfeita! O peixe sacode a cauda!",
+  "O peixe puxou! Mantendo a linha firme...",
+  "Boa! O peixe entrou na zona! Aguente firme!",
+  "Acerto! O peixe está resistindo!",
+  "Perfeito! O peixe se mexeu na zona!",
+  "Excelente timing! O peixe avançou!",
+  "Fisga perfeita! O peixe sacode a cauda!",
 ];
 
 // Mensagens imersivas de erro
 const FAILURE_MESSAGES = [
-  "❌ O peixe escapou pela zona! Tente mover mais rápido!",
-  "💔 O peixe se livrou! Melhor sorte na próxima!",
-  "🚫 Errou de novo! O peixe está ficando desconfiado...",
-  "😰 O peixe fugiu da zona! Continue tentando!",
-  "🏃 O peixe correu! Tente novamente!",
+  "O peixe escapou pela zona! Tente mover mais rápido!",
+  "O peixe se livrou! Melhor sorte na próxima!",
+  "Errou de novo! O peixe está ficando desconfiado...",
+  "O peixe fugiu da zona! Continue tentando!",
+  "O peixe correu! Tente novamente!",
 ];
 
 // Mensagens quando o peixe escapa
 const ESCAPE_MESSAGES = [
-  "😱 O peixe foi mais rápido! Conseguiu escapar da vara!",
-  "🌊 SPLASH! O peixe fez um grande salto e desapareceu!",
-  "💨 Ops! O peixe cortou a linha e fugiu para o fundo!",
-  "😤 O peixe teve força demais e conseguiu se soltar!",
-  "🏊 O peixe mergulhou fundo e desapareceu! Que peixe esperto!",
+  "O peixe foi mais rápido! Conseguiu escapar da vara!",
+  "SPLASH! O peixe fez um grande salto e desapareceu!",
+  "Ops! O peixe cortou a linha e fugiu para o fundo!",
+  "O peixe teve força demais e conseguiu se soltar!",
+  "O peixe mergulhou fundo e desapareceu! Que peixe esperto!",
 ];
 
 // Mensagens quando captura o peixe
 const CAPTURE_MESSAGES = [
-  "🎉 PUXÃO FINAL! Você conseguiu pegar o peixe!",
-  "🏆 VENCEU! O peixe está na sua mão!",
-  "⭐ INCRÍVEL! Você dominou o peixe!",
-  "🔥 ÉPICO! A vara resistiu e você capturou!",
-  "🎊 SUCESSO! O peixe está capturado!",
+  "PUXÃO FINAL! Você conseguiu pegar o peixe!",
+  "VENCEU! O peixe está na sua mão!",
+  "INCRÍVEL! Você dominou o peixe!",
+  "ÉPICO! A vara resistiu e você capturou!",
+  "SUCESSO! O peixe está capturado!",
 ];
 
 function getRandomMessage(messages: string[]): string {
