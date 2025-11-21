@@ -41,10 +41,6 @@ const weapons = [
     id: "rifle_de_caca",
     ...ITEMS.rifle_de_caca,
   },
-  {
-    id: "fishing_rod",
-    ...ITEMS.fishing_rod,
-  },
 ];
 
 const commandBuilder = new SlashCommandBuilder()

@@ -24,10 +24,6 @@ const weapons = [
         id: "rifle_de_caca",
         ...inventoryManager_1.ITEMS.rifle_de_caca,
     },
-    {
-        id: "fishing_rod",
-        ...inventoryManager_1.ITEMS.fishing_rod,
-    },
 ];
 const commandBuilder = new discord_js_1.SlashCommandBuilder()
     .setName("armaria")

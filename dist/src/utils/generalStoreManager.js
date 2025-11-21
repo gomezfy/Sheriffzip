@@ -14,6 +14,16 @@ const inventoryManager_1 = require("./inventoryManager");
 const path_1 = __importDefault(require("path"));
 exports.GENERAL_STORE_ITEMS = [
     {
+        id: 'fishing_rod',
+        name: 'Vara de Pesca',
+        description: 'Vara de pesca profissional para pescar nos rios do oeste',
+        price: 800,
+        currency: 'silver',
+        emoji: inventoryManager_1.ITEMS.fishing_rod.emoji,
+        imageFile: 'https://i.postimg.cc/pyNMzMHD/IMG-3529.png',
+        category: 'tools',
+    },
+    {
         id: 'pickaxe',
         name: 'Picareta Lendária',
         description: 'Uma picareta lendária que aumenta massivamente sua produção de ouro na mineração solo (16-28 barras ao invés de 1-3)',

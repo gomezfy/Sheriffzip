@@ -20,6 +20,16 @@ export interface GeneralStoreItemImage {
 
 export const GENERAL_STORE_ITEMS: GeneralStoreItem[] = [
   {
+    id: 'fishing_rod',
+    name: 'Vara de Pesca',
+    description: 'Vara de pesca profissional para pescar nos rios do oeste',
+    price: 800,
+    currency: 'silver',
+    emoji: ITEMS.fishing_rod.emoji,
+    imageFile: 'https://i.postimg.cc/pyNMzMHD/IMG-3529.png',
+    category: 'tools',
+  },
+  {
     id: 'pickaxe',
     name: 'Picareta Lendária',
     description: 'Uma picareta lendária que aumenta massivamente sua produção de ouro na mineração solo (16-28 barras ao invés de 1-3)',

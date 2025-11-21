@@ -1,1 +1,1 @@
-{"version":3,"file":"armaria.d.ts","sourceRoot":"","sources":["../../../../src/commands/economy/armaria.ts"],"names":[],"mappings":"AAAA,OAAO,EAGL,2BAA2B,EAM5B,MAAM,YAAY,CAAC;;;yBAgDS,2BAA2B,GAAG,OAAO,CAAC,IAAI,CAAC;;AAFxE,wBAmME"}
+{"version":3,"file":"armaria.d.ts","sourceRoot":"","sources":["../../../../src/commands/economy/armaria.ts"],"names":[],"mappings":"AAAA,OAAO,EAGL,2BAA2B,EAM5B,MAAM,YAAY,CAAC;;;yBA4CS,2BAA2B,GAAG,OAAO,CAAC,IAAI,CAAC;;AAFxE,wBAmME"}
