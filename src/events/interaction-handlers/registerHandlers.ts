@@ -44,7 +44,7 @@ import {
   handleHunterStoreBuyBasicBait,
   handleHunterStoreBuyPremiumBait,
 } from './buttons/hunterStoreHandlers';
-import { handleHunterStoreSell } from './selectMenus/hunterStoreMenus';
+import { handleHunterStoreMenu, handleHunterStoreSell, handleHunterStoreBuy } from './selectMenus/hunterStoreMenus';
 import {
   handleFishLeft,
   handleFishRight,
@@ -145,8 +145,10 @@ export function registerAllHandlers(): void {
   componentRegistry.registerButtonPattern(/^hunterstore_back_.+$/, handleHunterStoreBack);
   componentRegistry.registerButtonPattern(/^hunterstore_confirm_.+$/, handleHunterStoreConfirm);
   
-  // Hunter Store select menu
+  // Hunter Store select menus
+  componentRegistry.registerSelectMenuPattern(/^hunterstore_menu_.+$/, handleHunterStoreMenu);
   componentRegistry.registerSelectMenuPattern(/^hunterstore_sell_.+$/, handleHunterStoreSell);
+  componentRegistry.registerSelectMenuPattern(/^hunterstore_buy_.+$/, handleHunterStoreBuy);
   
   // Evento handlers (classification and prizes buttons)
   componentRegistry.registerButton('evento_mining_classification', handleMiningClassification);

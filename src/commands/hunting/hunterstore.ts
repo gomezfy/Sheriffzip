@@ -3,8 +3,8 @@ import {
   ChatInputCommandInteraction,
   EmbedBuilder,
   ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
+  StringSelectMenuBuilder,
+  StringSelectMenuOptionBuilder,
 } from "discord.js";
 import { applyLocalizations } from "../../utils/commandLocalizations";
 import { getItem, removeItem } from "../../utils/inventoryManager";
@@ -224,50 +224,44 @@ export default {
       .setFooter({ text: "Escolha uma categoria" })
       .setTimestamp();
 
-    const meatButton = new ButtonBuilder()
-      .setCustomId(`hunterstore_meat_${userId}`)
-      .setLabel("Vender Carnes")
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji("🥩");
+    const selectMenu = new StringSelectMenuBuilder()
+      .setCustomId(`hunterstore_menu_${userId}`)
+      .setPlaceholder("Selecione uma categoria")
+      .addOptions(
+        new StringSelectMenuOptionBuilder()
+          .setLabel("Vender Carnes")
+          .setDescription("Venda suas carnes de caça por moedas de prata")
+          .setValue(`hunterstore_meat_${userId}`)
+          .setEmoji("🥩"),
+        new StringSelectMenuOptionBuilder()
+          .setLabel("Vender Peles")
+          .setDescription("Venda peles valiosas de animais")
+          .setValue(`hunterstore_pelt_${userId}`)
+          .setEmoji(getEmoji("deer_pelt")),
+        new StringSelectMenuOptionBuilder()
+          .setLabel("Vender Peixes")
+          .setDescription("Venda seus peixes capturados")
+          .setValue(`hunterstore_fish_${userId}`)
+          .setEmoji(getEmoji("catfish")),
+        new StringSelectMenuOptionBuilder()
+          .setLabel("Vender Penas")
+          .setDescription("Venda penas raras de águia")
+          .setValue(`hunterstore_special_${userId}`)
+          .setEmoji(getEmoji("eagle_feather")),
+        new StringSelectMenuOptionBuilder()
+          .setLabel("Comprar Suprimentos")
+          .setDescription("Compre iscas para pesca")
+          .setValue(`hunterstore_supply_${userId}`)
+          .setEmoji(getEmoji("basic_bait")),
+      );
 
-    const peltButton = new ButtonBuilder()
-      .setCustomId(`hunterstore_pelt_${userId}`)
-      .setLabel("Vender Peles")
-      .setStyle(ButtonStyle.Success)
-      .setEmoji(getEmoji("deer_pelt"));
-
-    const fishButton = new ButtonBuilder()
-      .setCustomId(`hunterstore_fish_${userId}`)
-      .setLabel("Vender Peixes")
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji(getEmoji("catfish"));
-
-    const specialButton = new ButtonBuilder()
-      .setCustomId(`hunterstore_special_${userId}`)
-      .setLabel("Vender Penas")
-      .setStyle(ButtonStyle.Secondary)
-      .setEmoji(getEmoji("eagle_feather"));
-
-    const supplyButton = new ButtonBuilder()
-      .setCustomId(`hunterstore_supply_${userId}`)
-      .setLabel("Comprar Suprimentos")
-      .setStyle(ButtonStyle.Danger)
-      .setEmoji(getEmoji("basic_bait"));
-
-    const row1 = new ActionRowBuilder<ButtonBuilder>().addComponents(
-      meatButton,
-      peltButton,
-      fishButton,
-      specialButton,
-    );
-
-    const row2 = new ActionRowBuilder<ButtonBuilder>().addComponents(
-      supplyButton,
+    const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+      selectMenu,
     );
 
     await interaction.editReply({
       embeds: [mainEmbed],
-      components: [row1, row2],
+      components: [row],
     });
   },
 };

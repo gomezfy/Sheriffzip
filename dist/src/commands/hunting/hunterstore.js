@@ -199,36 +199,34 @@ exports.default = {
             .setImage("https://i.postimg.cc/BQ11FPd3/IMG-3478.png")
             .setFooter({ text: "Escolha uma categoria" })
             .setTimestamp();
-        const meatButton = new discord_js_1.ButtonBuilder()
-            .setCustomId(`hunterstore_meat_${userId}`)
+        const selectMenu = new discord_js_1.StringSelectMenuBuilder()
+            .setCustomId(`hunterstore_menu_${userId}`)
+            .setPlaceholder("Selecione uma categoria")
+            .addOptions(new discord_js_1.StringSelectMenuOptionBuilder()
             .setLabel("Vender Carnes")
-            .setStyle(discord_js_1.ButtonStyle.Primary)
-            .setEmoji("🥩");
-        const peltButton = new discord_js_1.ButtonBuilder()
-            .setCustomId(`hunterstore_pelt_${userId}`)
+            .setDescription("Venda suas carnes de caça por moedas de prata")
+            .setValue(`hunterstore_meat_${userId}`)
+            .setEmoji("🥩"), new discord_js_1.StringSelectMenuOptionBuilder()
             .setLabel("Vender Peles")
-            .setStyle(discord_js_1.ButtonStyle.Success)
-            .setEmoji((0, customEmojis_1.getEmoji)("deer_pelt"));
-        const fishButton = new discord_js_1.ButtonBuilder()
-            .setCustomId(`hunterstore_fish_${userId}`)
+            .setDescription("Venda peles valiosas de animais")
+            .setValue(`hunterstore_pelt_${userId}`)
+            .setEmoji((0, customEmojis_1.getEmoji)("deer_pelt")), new discord_js_1.StringSelectMenuOptionBuilder()
             .setLabel("Vender Peixes")
-            .setStyle(discord_js_1.ButtonStyle.Primary)
-            .setEmoji((0, customEmojis_1.getEmoji)("catfish"));
-        const specialButton = new discord_js_1.ButtonBuilder()
-            .setCustomId(`hunterstore_special_${userId}`)
+            .setDescription("Venda seus peixes capturados")
+            .setValue(`hunterstore_fish_${userId}`)
+            .setEmoji((0, customEmojis_1.getEmoji)("catfish")), new discord_js_1.StringSelectMenuOptionBuilder()
             .setLabel("Vender Penas")
-            .setStyle(discord_js_1.ButtonStyle.Secondary)
-            .setEmoji((0, customEmojis_1.getEmoji)("eagle_feather"));
-        const supplyButton = new discord_js_1.ButtonBuilder()
-            .setCustomId(`hunterstore_supply_${userId}`)
+            .setDescription("Venda penas raras de águia")
+            .setValue(`hunterstore_special_${userId}`)
+            .setEmoji((0, customEmojis_1.getEmoji)("eagle_feather")), new discord_js_1.StringSelectMenuOptionBuilder()
             .setLabel("Comprar Suprimentos")
-            .setStyle(discord_js_1.ButtonStyle.Danger)
-            .setEmoji((0, customEmojis_1.getEmoji)("basic_bait"));
-        const row1 = new discord_js_1.ActionRowBuilder().addComponents(meatButton, peltButton, fishButton, specialButton);
-        const row2 = new discord_js_1.ActionRowBuilder().addComponents(supplyButton);
+            .setDescription("Compre iscas para pesca")
+            .setValue(`hunterstore_supply_${userId}`)
+            .setEmoji((0, customEmojis_1.getEmoji)("basic_bait")));
+        const row = new discord_js_1.ActionRowBuilder().addComponents(selectMenu);
         await interaction.editReply({
             embeds: [mainEmbed],
-            components: [row1, row2],
+            components: [row],
         });
     },
 };

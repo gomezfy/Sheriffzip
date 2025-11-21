@@ -316,38 +316,50 @@ async function handleHunterStoreBack(interaction) {
         .setColor("#d4af37")
         .setTitle(`${(0, customEmojis_1.getEmoji)("shop")} Hunter's Store - Loja do Caçador`)
         .setDescription(`Bem-vindo à **Hunter's Store**, ${interaction.user.username}!\n\n` +
-        `Compramos suas carnes, peles e peixes pelos melhores preços do velho oeste!\n\n` +
-        `${(0, customEmojis_1.getEmoji)("gift")} **O que compramos:**\n` +
+        `Compramos suas carnes, peles e peixes pelos melhores preços do velho oeste!\n` +
+        `Também vendemos suprimentos essenciais para caça e pesca!\n\n` +
+        `${(0, customEmojis_1.getEmoji)("gift")} **Vendemos (você vende para nós):**\n` +
         `🍖 **Carnes** - De coelho a urso\n` +
         `${(0, customEmojis_1.getEmoji)("rabbit_pelt")} **Peles** - Valiosas peles de animais\n` +
-        `🐟 **Peixes** - Do bagre ao peixe mítico\n` +
-        `🪶 **Penas Raras** - Penas de águia dourada\n\n` +
+        `${(0, customEmojis_1.getEmoji)("catfish")} **Peixes** - Do bagre ao peixe mítico\n` +
+        `${(0, customEmojis_1.getEmoji)("eagle_feather")} **Penas Raras** - Penas de águia dourada\n\n` +
+        `${(0, customEmojis_1.getEmoji)("shop")} **Compramos (você compra de nós):**\n` +
+        `${(0, customEmojis_1.getEmoji)("basic_bait")} **Suprimentos** - Iscas para pesca\n\n` +
         `${(0, customEmojis_1.getEmoji)("coin")} Todos os pagamentos são feitos em **moedas de prata**!\n\n` +
-        `Selecione uma categoria abaixo para ver os preços:`)
+        `Selecione uma categoria abaixo:`)
         .setImage("https://i.postimg.cc/BQ11FPd3/IMG-3478.png")
-        .setFooter({ text: "Escolha o que deseja vender" })
+        .setFooter({ text: "Escolha uma categoria" })
         .setTimestamp();
-    const meatButton = new discord_js_1.ButtonBuilder()
-        .setCustomId(`hunterstore_meat_${userId}`)
-        .setLabel("Carnes")
-        .setStyle(discord_js_1.ButtonStyle.Primary)
-        .setEmoji("🥩");
-    const peltButton = new discord_js_1.ButtonBuilder()
-        .setCustomId(`hunterstore_pelt_${userId}`)
-        .setLabel("Peles")
-        .setStyle(discord_js_1.ButtonStyle.Success)
-        .setEmoji((0, customEmojis_1.getEmoji)("deer_pelt"));
-    const fishButton = new discord_js_1.ButtonBuilder()
-        .setCustomId(`hunterstore_fish_${userId}`)
-        .setLabel("Peixes")
-        .setStyle(discord_js_1.ButtonStyle.Primary)
-        .setEmoji("🐟");
-    const specialButton = new discord_js_1.ButtonBuilder()
-        .setCustomId(`hunterstore_special_${userId}`)
-        .setLabel("Penas Raras")
-        .setStyle(discord_js_1.ButtonStyle.Secondary)
-        .setEmoji("🪶");
-    const row = new discord_js_1.ActionRowBuilder().addComponents(meatButton, peltButton, fishButton, specialButton);
+    const selectMenu = new discord_js_1.StringSelectMenuBuilder()
+        .setCustomId(`hunterstore_menu_${userId}`)
+        .setPlaceholder("Selecione uma categoria")
+        .addOptions({
+        label: "Vender Carnes",
+        description: "Venda suas carnes de caça por moedas de prata",
+        value: `hunterstore_meat_${userId}`,
+        emoji: "🥩",
+    }, {
+        label: "Vender Peles",
+        description: "Venda peles valiosas de animais",
+        value: `hunterstore_pelt_${userId}`,
+        emoji: parseCustomEmoji((0, customEmojis_1.getEmoji)("deer_pelt")),
+    }, {
+        label: "Vender Peixes",
+        description: "Venda seus peixes capturados",
+        value: `hunterstore_fish_${userId}`,
+        emoji: parseCustomEmoji((0, customEmojis_1.getEmoji)("catfish")),
+    }, {
+        label: "Vender Penas",
+        description: "Venda penas raras de águia",
+        value: `hunterstore_special_${userId}`,
+        emoji: parseCustomEmoji((0, customEmojis_1.getEmoji)("eagle_feather")),
+    }, {
+        label: "Comprar Suprimentos",
+        description: "Compre iscas para pesca",
+        value: `hunterstore_supply_${userId}`,
+        emoji: parseCustomEmoji((0, customEmojis_1.getEmoji)("basic_bait")),
+    });
+    const row = new discord_js_1.ActionRowBuilder().addComponents(selectMenu);
     await interaction.editReply({
         embeds: [mainEmbed],
         components: [row],
@@ -356,7 +368,10 @@ async function handleHunterStoreBack(interaction) {
 async function handleHunterStoreConfirm(interaction) {
     const customIdParts = interaction.customId.split("_");
     const userId = customIdParts[customIdParts.length - 1];
-    const itemId = customIdParts.slice(2, customIdParts.length - 1).join("_");
+    const isBuy = customIdParts.includes("buy");
+    const itemId = isBuy
+        ? customIdParts.slice(3, customIdParts.length - 1).join("_")
+        : customIdParts.slice(2, customIdParts.length - 1).join("_");
     if (interaction.user.id !== userId) {
         await interaction.reply({
             content: "❌ Este botão não é para você!",
@@ -365,7 +380,53 @@ async function handleHunterStoreConfirm(interaction) {
         return;
     }
     await interaction.deferUpdate();
-    const allItems = [...hunterstore_1.MEAT_ITEMS, ...hunterstore_1.PELT_ITEMS, ...hunterstore_1.SPECIAL_ITEMS];
+    if (isBuy) {
+        const selectedItem = hunterstore_1.SUPPLY_ITEMS.find((item) => item.id === itemId);
+        if (!selectedItem) {
+            await interaction.editReply({
+                content: "❌ Item não encontrado!",
+                components: [],
+            });
+            return;
+        }
+        const userSilver = (0, inventoryManager_1.getItem)(userId, "silver");
+        if (userSilver < selectedItem.price) {
+            const noMoneyEmbed = (0, embeds_1.warningEmbed)("❌ Moedas Insuficientes", `Você não tem moedas suficientes para comprar **${selectedItem.name}**!\n\n` +
+                `Custo: ${(0, customEmojis_1.getEmoji)("coin")} **${selectedItem.price.toLocaleString()}** moedas\n` +
+                `Seu saldo: ${(0, customEmojis_1.getEmoji)("coin")} **${userSilver.toLocaleString()}** moedas\n` +
+                `Faltam: ${(0, customEmojis_1.getEmoji)("coin")} **${(selectedItem.price - userSilver).toLocaleString()}** moedas`, "Venda itens para conseguir mais moedas!");
+            await interaction.editReply({
+                embeds: [noMoneyEmbed],
+                components: [],
+            });
+            return;
+        }
+        await (0, inventoryManager_1.removeItem)(userId, "silver", selectedItem.price);
+        await (0, inventoryManager_1.addItem)(userId, itemId, 1);
+        const successEmbed = new discord_js_1.EmbedBuilder()
+            .setColor("#10b981")
+            .setTitle(`${(0, customEmojis_1.getEmoji)("check")} Compra Realizada com Sucesso!`)
+            .setDescription(`Você comprou na **Hunter's Store**!\n\n` +
+            `${selectedItem.emoji} **${selectedItem.name}**\n` +
+            `├ Quantidade: **1x**\n` +
+            `└ Preço: ${(0, customEmojis_1.getEmoji)("coin")} **${selectedItem.price.toLocaleString()}** moedas de prata\n\n` +
+            `${(0, customEmojis_1.getEmoji)("coin")} Saldo restante: **${(userSilver - selectedItem.price).toLocaleString()}** moedas\n\n` +
+            `🎣 Use \`/fish\` para pescar!`)
+            .setFooter({ text: "Hunter's Store - Suprimentos de qualidade!" })
+            .setTimestamp();
+        const backButton = new discord_js_1.ButtonBuilder()
+            .setCustomId(`hunterstore_back_${userId}`)
+            .setLabel("Voltar ao Menu")
+            .setStyle(discord_js_1.ButtonStyle.Primary)
+            .setEmoji("🏪");
+        const row = new discord_js_1.ActionRowBuilder().addComponents(backButton);
+        await interaction.editReply({
+            embeds: [successEmbed],
+            components: [row],
+        });
+        return;
+    }
+    const allItems = [...hunterstore_1.MEAT_ITEMS, ...hunterstore_1.PELT_ITEMS, ...hunterstore_1.FISH_ITEMS, ...hunterstore_1.SPECIAL_ITEMS];
     const selectedItem = allItems.find((item) => item.id === itemId);
     if (!selectedItem) {
         await interaction.editReply({

@@ -89,8 +89,10 @@ function registerAllHandlers() {
     interactions_1.componentRegistry.registerButtonPattern(/^hunterstore_buy_premium_bait_.+$/, hunterStoreHandlers_1.handleHunterStoreBuyPremiumBait);
     interactions_1.componentRegistry.registerButtonPattern(/^hunterstore_back_.+$/, hunterStoreHandlers_1.handleHunterStoreBack);
     interactions_1.componentRegistry.registerButtonPattern(/^hunterstore_confirm_.+$/, hunterStoreHandlers_1.handleHunterStoreConfirm);
-    // Hunter Store select menu
+    // Hunter Store select menus
+    interactions_1.componentRegistry.registerSelectMenuPattern(/^hunterstore_menu_.+$/, hunterStoreMenus_1.handleHunterStoreMenu);
     interactions_1.componentRegistry.registerSelectMenuPattern(/^hunterstore_sell_.+$/, hunterStoreMenus_1.handleHunterStoreSell);
+    interactions_1.componentRegistry.registerSelectMenuPattern(/^hunterstore_buy_.+$/, hunterStoreMenus_1.handleHunterStoreBuy);
     // Evento handlers (classification and prizes buttons)
     interactions_1.componentRegistry.registerButton('evento_mining_classification', eventoHandlers_1.handleMiningClassification);
     interactions_1.componentRegistry.registerButton('evento_mining_prizes', eventoHandlers_1.handleMiningPrizes);

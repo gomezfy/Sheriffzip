@@ -407,48 +407,60 @@ export async function handleHunterStoreBack(
     .setTitle(`${getEmoji("shop")} Hunter's Store - Loja do Caçador`)
     .setDescription(
       `Bem-vindo à **Hunter's Store**, ${interaction.user.username}!\n\n` +
-      `Compramos suas carnes, peles e peixes pelos melhores preços do velho oeste!\n\n` +
-      `${getEmoji("gift")} **O que compramos:**\n` +
+      `Compramos suas carnes, peles e peixes pelos melhores preços do velho oeste!\n` +
+      `Também vendemos suprimentos essenciais para caça e pesca!\n\n` +
+      `${getEmoji("gift")} **Vendemos (você vende para nós):**\n` +
       `🍖 **Carnes** - De coelho a urso\n` +
       `${getEmoji("rabbit_pelt")} **Peles** - Valiosas peles de animais\n` +
-      `🐟 **Peixes** - Do bagre ao peixe mítico\n` +
-      `🪶 **Penas Raras** - Penas de águia dourada\n\n` +
+      `${getEmoji("catfish")} **Peixes** - Do bagre ao peixe mítico\n` +
+      `${getEmoji("eagle_feather")} **Penas Raras** - Penas de águia dourada\n\n` +
+      `${getEmoji("shop")} **Compramos (você compra de nós):**\n` +
+      `${getEmoji("basic_bait")} **Suprimentos** - Iscas para pesca\n\n` +
       `${getEmoji("coin")} Todos os pagamentos são feitos em **moedas de prata**!\n\n` +
-      `Selecione uma categoria abaixo para ver os preços:`
+      `Selecione uma categoria abaixo:`
     )
     .setImage("https://i.postimg.cc/BQ11FPd3/IMG-3478.png")
-    .setFooter({ text: "Escolha o que deseja vender" })
+    .setFooter({ text: "Escolha uma categoria" })
     .setTimestamp();
 
-  const meatButton = new ButtonBuilder()
-    .setCustomId(`hunterstore_meat_${userId}`)
-    .setLabel("Carnes")
-    .setStyle(ButtonStyle.Primary)
-    .setEmoji("🥩");
+  const selectMenu = new StringSelectMenuBuilder()
+    .setCustomId(`hunterstore_menu_${userId}`)
+    .setPlaceholder("Selecione uma categoria")
+    .addOptions(
+      {
+        label: "Vender Carnes",
+        description: "Venda suas carnes de caça por moedas de prata",
+        value: `hunterstore_meat_${userId}`,
+        emoji: "🥩",
+      },
+      {
+        label: "Vender Peles",
+        description: "Venda peles valiosas de animais",
+        value: `hunterstore_pelt_${userId}`,
+        emoji: parseCustomEmoji(getEmoji("deer_pelt")),
+      },
+      {
+        label: "Vender Peixes",
+        description: "Venda seus peixes capturados",
+        value: `hunterstore_fish_${userId}`,
+        emoji: parseCustomEmoji(getEmoji("catfish")),
+      },
+      {
+        label: "Vender Penas",
+        description: "Venda penas raras de águia",
+        value: `hunterstore_special_${userId}`,
+        emoji: parseCustomEmoji(getEmoji("eagle_feather")),
+      },
+      {
+        label: "Comprar Suprimentos",
+        description: "Compre iscas para pesca",
+        value: `hunterstore_supply_${userId}`,
+        emoji: parseCustomEmoji(getEmoji("basic_bait")),
+      },
+    );
 
-  const peltButton = new ButtonBuilder()
-    .setCustomId(`hunterstore_pelt_${userId}`)
-    .setLabel("Peles")
-    .setStyle(ButtonStyle.Success)
-    .setEmoji(getEmoji("deer_pelt"));
-
-  const fishButton = new ButtonBuilder()
-    .setCustomId(`hunterstore_fish_${userId}`)
-    .setLabel("Peixes")
-    .setStyle(ButtonStyle.Primary)
-    .setEmoji("🐟");
-
-  const specialButton = new ButtonBuilder()
-    .setCustomId(`hunterstore_special_${userId}`)
-    .setLabel("Penas Raras")
-    .setStyle(ButtonStyle.Secondary)
-    .setEmoji("🪶");
-
-  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    meatButton,
-    peltButton,
-    fishButton,
-    specialButton,
+  const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+    selectMenu,
   );
 
   await interaction.editReply({
@@ -462,7 +474,11 @@ export async function handleHunterStoreConfirm(
 ): Promise<void> {
   const customIdParts = interaction.customId.split("_");
   const userId = customIdParts[customIdParts.length - 1];
-  const itemId = customIdParts.slice(2, customIdParts.length - 1).join("_");
+  
+  const isBuy = customIdParts.includes("buy");
+  const itemId = isBuy
+    ? customIdParts.slice(3, customIdParts.length - 1).join("_")
+    : customIdParts.slice(2, customIdParts.length - 1).join("_");
 
   if (interaction.user.id !== userId) {
     await interaction.reply({
@@ -474,7 +490,69 @@ export async function handleHunterStoreConfirm(
 
   await interaction.deferUpdate();
 
-  const allItems = [...MEAT_ITEMS, ...PELT_ITEMS, ...SPECIAL_ITEMS];
+  if (isBuy) {
+    const selectedItem = SUPPLY_ITEMS.find((item) => item.id === itemId);
+
+    if (!selectedItem) {
+      await interaction.editReply({
+        content: "❌ Item não encontrado!",
+        components: [],
+      });
+      return;
+    }
+
+    const userSilver = getItem(userId, "silver");
+
+    if (userSilver < selectedItem.price) {
+      const noMoneyEmbed = warningEmbed(
+        "❌ Moedas Insuficientes",
+        `Você não tem moedas suficientes para comprar **${selectedItem.name}**!\n\n` +
+        `Custo: ${getEmoji("coin")} **${selectedItem.price.toLocaleString()}** moedas\n` +
+        `Seu saldo: ${getEmoji("coin")} **${userSilver.toLocaleString()}** moedas\n` +
+        `Faltam: ${getEmoji("coin")} **${(selectedItem.price - userSilver).toLocaleString()}** moedas`,
+        "Venda itens para conseguir mais moedas!",
+      );
+
+      await interaction.editReply({
+        embeds: [noMoneyEmbed],
+        components: [],
+      });
+      return;
+    }
+
+    await removeItem(userId, "silver", selectedItem.price);
+    await addItem(userId, itemId, 1);
+
+    const successEmbed = new EmbedBuilder()
+      .setColor("#10b981")
+      .setTitle(`${getEmoji("check")} Compra Realizada com Sucesso!`)
+      .setDescription(
+        `Você comprou na **Hunter's Store**!\n\n` +
+        `${selectedItem.emoji} **${selectedItem.name}**\n` +
+        `├ Quantidade: **1x**\n` +
+        `└ Preço: ${getEmoji("coin")} **${selectedItem.price.toLocaleString()}** moedas de prata\n\n` +
+        `${getEmoji("coin")} Saldo restante: **${(userSilver - selectedItem.price).toLocaleString()}** moedas\n\n` +
+        `🎣 Use \`/fish\` para pescar!`
+      )
+      .setFooter({ text: "Hunter's Store - Suprimentos de qualidade!" })
+      .setTimestamp();
+
+    const backButton = new ButtonBuilder()
+      .setCustomId(`hunterstore_back_${userId}`)
+      .setLabel("Voltar ao Menu")
+      .setStyle(ButtonStyle.Primary)
+      .setEmoji("🏪");
+
+    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(backButton);
+
+    await interaction.editReply({
+      embeds: [successEmbed],
+      components: [row],
+    });
+    return;
+  }
+
+  const allItems = [...MEAT_ITEMS, ...PELT_ITEMS, ...FISH_ITEMS, ...SPECIAL_ITEMS];
   const selectedItem = allItems.find((item) => item.id === itemId);
 
   if (!selectedItem) {
