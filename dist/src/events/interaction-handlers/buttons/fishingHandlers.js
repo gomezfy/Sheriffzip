@@ -46,6 +46,21 @@ const CAPTURE_MESSAGES = [
 function getRandomMessage(messages) {
     return messages[Math.floor(Math.random() * messages.length)];
 }
+// Determina o artigo correto para o nome do peixe
+function getArticle(fishName) {
+    const feminineFishes = ["Truta Prateada", "Águia Dourada"];
+    if (feminineFishes.includes(fishName)) {
+        return "A";
+    }
+    return "O";
+}
+// Substitui "peixe" pela forma correta com artigo
+function replaceFishName(message, fishName) {
+    const article = getArticle(fishName);
+    return message
+        .replace(/O peixe/gi, `${article} ${fishName}`)
+        .replace(/peixe/gi, fishName);
+}
 /**
  * Handler para mover a barra para a esquerda
  */
@@ -117,14 +132,15 @@ async function handleFishCatch(interaction) {
     if (fishingSessionManager_1.fishingSessionManager.hasWon(userId)) {
         // VITÓRIA - Pegou o peixe! (usar transaction lock)
         const fishItem = session.fishRewards.fish;
-        const captureMessage = getRandomMessage(CAPTURE_MESSAGES).replace("peixe", session.fishName);
+        const article = getArticle(session.fishName);
+        const captureMessage = replaceFishName(getRandomMessage(CAPTURE_MESSAGES), session.fishName);
         await transactionLock_1.transactionLock.withLock(userId, async () => {
             (0, inventoryManager_1.addItem)(userId, fishItem.id, fishItem.amount);
             (0, inventoryManager_1.reduceDurability)(userId, "fishing_rod", 1);
             (0, xpManager_1.addXp)(userId, session.fishExperience);
         });
-        const successEmb = (0, embeds_1.successEmbed)(`${(0, customEmojis_1.getEmoji)("trophy")} ${session.fishName} Capturado!`, `${captureMessage}!\n\n` +
-            `Você pescou um **${session.fishName}**! ${session.fishEmoji}\n\n` +
+        const successEmb = (0, embeds_1.successEmbed)(`${(0, customEmojis_1.getEmoji)("trophy")} ${article} ${session.fishName} Capturado!`, `${captureMessage}!\n\n` +
+            `Você pescou ${article.toLowerCase()} **${session.fishName}**! ${session.fishEmoji}\n\n` +
             `**Recompensas:**\n` +
             `${session.fishEmoji} ${session.fishName} x${fishItem.amount}\n` +
             `${(0, customEmojis_1.getEmoji)("star")} +${session.fishExperience} XP\n\n` +
@@ -139,10 +155,11 @@ async function handleFishCatch(interaction) {
     // Verificar se perdeu
     if (fishingSessionManager_1.fishingSessionManager.hasLost(userId)) {
         // DERROTA - Ficou sem tentativas
-        const escapeMessage = getRandomMessage(ESCAPE_MESSAGES).replace("peixe", session.fishName);
+        const article = getArticle(session.fishName);
+        const escapeMessage = replaceFishName(getRandomMessage(ESCAPE_MESSAGES), session.fishName);
         const lostEmbed = new discord_js_1.EmbedBuilder()
             .setColor("#ef4444")
-            .setTitle(`💔 O ${session.fishName} Escapou!`)
+            .setTitle(`💔 ${article} ${session.fishName} Escapou!`)
             .setDescription(`${escapeMessage}!\n\n` +
             `Infelizmente, você não conseguiu acertar a zona verde o suficiente.\n\n` +
             `**Estatísticas Finais:**\n` +
@@ -169,11 +186,11 @@ async function updateFishingEmbed(interaction, userId, lastCatchAttempt) {
     let feedbackText = "";
     if (lastCatchAttempt !== undefined) {
         if (lastCatchAttempt) {
-            const successMsg = getRandomMessage(SUCCESS_MESSAGES).replace("peixe", session.fishName);
+            const successMsg = replaceFishName(getRandomMessage(SUCCESS_MESSAGES), session.fishName);
             feedbackText = `\n${successMsg}\n**Acertos:** ${session.successfulCatches}/${session.requiredCatches}`;
         }
         else {
-            const failMsg = getRandomMessage(FAILURE_MESSAGES).replace("peixe", session.fishName);
+            const failMsg = replaceFishName(getRandomMessage(FAILURE_MESSAGES), session.fishName);
             feedbackText = `\n${failMsg}`;
         }
     }
