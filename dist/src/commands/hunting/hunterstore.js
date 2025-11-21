@@ -188,12 +188,13 @@ exports.default = {
             `Compramos suas carnes, peles e peixes pelos melhores preços do velho oeste!\n` +
             `Também vendemos suprimentos essenciais para caça e pesca!\n\n` +
             `${(0, customEmojis_1.getEmoji)("gift")} **Vendemos (você vende para nós):**\n` +
-            `🍖 **Carnes** - De coelho a urso\n` +
+            `${(0, customEmojis_1.getEmoji)("meat_rex")} **Carnes** - De coelho a urso\n` +
             `${(0, customEmojis_1.getEmoji)("rabbit_pelt")} **Peles** - Valiosas peles de animais\n` +
             `${(0, customEmojis_1.getEmoji)("catfish")} **Peixes** - Do bagre ao peixe mítico\n` +
             `${(0, customEmojis_1.getEmoji)("eagle_feather")} **Penas Raras** - Penas de águia dourada\n\n` +
             `${(0, customEmojis_1.getEmoji)("shop")} **Compramos (você compra de nós):**\n` +
-            `${(0, customEmojis_1.getEmoji)("basic_bait")} **Suprimentos** - Iscas para pesca\n\n` +
+            `${(0, customEmojis_1.getEmoji)("basic_bait")} **Isca Básica** - Pesca peixes comuns\n` +
+            `${(0, customEmojis_1.getEmoji)("premium_bait")} **Isca Premium** - Aumenta chance de raros\n\n` +
             `${(0, customEmojis_1.getEmoji)("coin")} Todos os pagamentos são feitos em **moedas de prata**!\n\n` +
             `Selecione uma categoria abaixo:`)
             .setImage("https://i.postimg.cc/BQ11FPd3/IMG-3478.png")
@@ -206,7 +207,7 @@ exports.default = {
             .setLabel("Vender Carnes")
             .setDescription("Venda suas carnes de caça por moedas de prata")
             .setValue(`hunterstore_meat_${userId}`)
-            .setEmoji("🥩"), new discord_js_1.StringSelectMenuOptionBuilder()
+            .setEmoji((0, customEmojis_1.getEmoji)("meat_rex")), new discord_js_1.StringSelectMenuOptionBuilder()
             .setLabel("Vender Peles")
             .setDescription("Venda peles valiosas de animais")
             .setValue(`hunterstore_pelt_${userId}`)
