@@ -170,10 +170,10 @@ export default {
     const rodCount = getItem(userId, "fishing_rod");
     if (rodCount === 0) {
       const embed = warningEmbed(
-        "🚫 Vara de Pesca Necessária",
-        "Você precisa de uma **Vara de Pesca** para ir pescar!\n\n" +
-          "💰 Compre uma vara na armaria por **5.000 moedas de prata**.\n" +
-          "Use `/armaria` para ver os itens disponíveis.",
+        `${getEmoji("cancel")} Vara de Pesca Necessária`,
+        `Você precisa de uma **Vara de Pesca** ${getEmoji("fishing_rod")} para ir pescar!\n\n` +
+          `${getEmoji("gold_bar")} Compre uma vara na armaria por **5.000 moedas de prata**.\n` +
+          `${getEmoji("info")} Use \`/armaria\` para ver os itens disponíveis.`,
         "Equipamento necessário para pescar",
       );
 
@@ -189,12 +189,12 @@ export default {
     if (!hasBait) {
       const embed = warningEmbed(
         `${getEmoji("basic_bait")} Isca Necessária`,
-        "Você precisa de **Isca** para pescar!\n\n" +
-          "💰 Compre iscas no **Hunter's Store** (`/hunterstore`).\n" +
-          "🎣 Cada pesca consome 1 isca.\n\n" +
-          "**Tipos de isca:**\n" +
+        `Você precisa de **Isca** para pescar!\n\n` +
+          `${getEmoji("moneybag")} Compre iscas no **Hunter's Store** (\`/hunterstore\`).\n` +
+          `${getEmoji("gift")} Cada pesca consome 1 isca.\n\n` +
+          `**Tipos de isca:**\n` +
           `${getEmoji("basic_bait")} **Isca Básica** - Peixes comuns e incomuns\n` +
-          `${getEmoji("premium_bait")} **Isca Premium** - Aumenta chance de peixes raros!`,
+          `${getEmoji("premium_bait")} **Isca Premium** ${getEmoji("sparkles")} - Aumenta chance de peixes raros!`,
         "Isca necessária para pescar",
       );
 
@@ -257,7 +257,7 @@ export default {
         `${fish.emoji} **${fish.name}**\n\n` +
         `${getEmoji("star")} **Raridade:** ${fish.rarity}\n` +
         `${getEmoji("lightning")} **Dificuldade:** ${"🔥".repeat(fish.difficulty)}\n` +
-        `${getEmoji("dart")} **Acertos Necessários:** ${fish.requiredCatches}\n\n` +
+        `${getEmoji("check")} **Acertos Necessários:** ${fish.requiredCatches}\n\n` +
         `**${getEmoji("info")} COMO JOGAR:**\n` +
         `Use os botões < e > para manter o 🎣 na zona verde 🟢!\n` +
         `Acerte a zona ${fish.requiredCatches} vezes para pegar o peixe!\n\n` +
@@ -266,7 +266,7 @@ export default {
       .addFields(
         {
           name: `${getEmoji("timer")} Status`,
-          value: `⏱️ Tentativas: ${session.attemptsRemaining}/${session.maxAttempts}\n✅ Acertos: ${session.successfulCatches}/${session.requiredCatches}`,
+          value: `${getEmoji("clock")} Tentativas: ${session.attemptsRemaining}/${session.maxAttempts}\n${getEmoji("check")} Acertos: ${session.successfulCatches}/${session.requiredCatches}`,
           inline: true
         },
         {
@@ -276,7 +276,7 @@ export default {
         }
       )
       .setFooter({ 
-        text: `🎣 Mantenha o 🎣 na zona verde 🟢 e pressione os botões no momento certo!` 
+        text: `${getEmoji("fishing_rod")} Mantenha o 🎣 na zona verde 🟢 e pressione os botões no momento certo!` 
       })
       .setTimestamp();
 

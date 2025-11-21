@@ -175,18 +175,22 @@ export async function handleFishCatch(interaction: ButtonInteraction): Promise<v
       addXp(userId, session.fishExperience);
     });
 
-    const successEmb = successEmbed(
-      `${getEmoji("trophy")} ${article} ${session.fishName} Capturado!`,
-      `${captureMessage}!\n\n` +
-        `Você pescou ${article.toLowerCase()} **${session.fishName}**! ${session.fishEmoji}\n\n` +
-        `**Recompensas:**\n` +
+    const successEmb = new EmbedBuilder()
+      .setColor("#00ff00")
+      .setTitle(`${getEmoji("trophy")} ${article} ${session.fishName} Capturado!`)
+      .setDescription(
+        `${captureMessage}!\n\n` +
+        `${getEmoji("check")} Você pescou ${article.toLowerCase()} **${session.fishName}**! ${session.fishEmoji}\n\n` +
+        `**${getEmoji("gift")} Recompensas:**\n` +
         `${session.fishEmoji} ${session.fishName} x${fishItem.amount}\n` +
         `${getEmoji("star")} +${session.fishExperience} XP\n\n` +
-        `**Estatísticas:**\n` +
-        `✅ Acertos na zona: ${session.successfulCatches}/${session.requiredCatches}\n` +
-        `🎯 Tentativas usadas: ${session.maxAttempts - session.attemptsRemaining}/${session.maxAttempts}\n\n` +
-        `Use \`/hunterstore\` para vender seus peixes!`,
-    );
+        `**${getEmoji("stats")} Estatísticas:**\n` +
+        `${getEmoji("check")} Acertos na zona: ${session.successfulCatches}/${session.requiredCatches}\n` +
+        `${getEmoji("timer")} Tentativas usadas: ${session.maxAttempts - session.attemptsRemaining}/${session.maxAttempts}\n\n` +
+        `${getEmoji("moneybag")} Use \`/hunterstore\` para vender seus peixes!`
+      )
+      .setFooter({ text: "Ótima pescaria!" })
+      .setTimestamp();
 
     fishingSessionManager.endSession(userId);
     await interaction.editReply({ embeds: [successEmb], components: [] });
@@ -200,16 +204,16 @@ export async function handleFishCatch(interaction: ButtonInteraction): Promise<v
     const escapeMessage = replaceFishName(getRandomMessage(ESCAPE_MESSAGES), session.fishName);
     const lostEmbed = new EmbedBuilder()
       .setColor("#ef4444")
-      .setTitle(`💔 ${article} ${session.fishName} Escapou!`)
+      .setTitle(`${getEmoji("cancel")} ${article} ${session.fishName} Escapou!`)
       .setDescription(
         `${escapeMessage}!\n\n` +
-        `Infelizmente, você não conseguiu acertar a zona verde o suficiente.\n\n` +
-        `**Estatísticas Finais:**\n` +
-        `✅ Acertos: ${session.successfulCatches}/${session.requiredCatches}\n` +
-        `❌ Faltaram: ${session.requiredCatches - session.successfulCatches} acertos\n\n` +
-        `Tente novamente com \`/fish\`!`,
+        `${getEmoji("warning")} Infelizmente, você não conseguiu acertar a zona verde o suficiente.\n\n` +
+        `**${getEmoji("stats")} Estatísticas Finais:**\n` +
+        `${getEmoji("check")} Acertos: ${session.successfulCatches}/${session.requiredCatches}\n` +
+        `${getEmoji("cross")} Faltaram: ${session.requiredCatches - session.successfulCatches} acertos\n\n` +
+        `${getEmoji("info")} Tente novamente com \`/fish\`!`,
       )
-      .setFooter({ text: "Dica: Fique atento ao movimento da barra e time seus cliques!" })
+      .setFooter({ text: `${getEmoji("dart")} Dica: Fique atento ao movimento da barra e time seus cliques!` })
       .setTimestamp();
 
     fishingSessionManager.endSession(userId);
@@ -250,24 +254,24 @@ async function updateFishingEmbed(
     .setTitle(`${getEmoji("dart")} Pescando: ${session.fishName}`)
     .setDescription(
       `${session.fishEmoji} **${session.fishName}** (${session.fishRarity})\n` +
-      `⚡ Dificuldade: ${"🔥".repeat(session.fishDifficulty)}\n\n` +
+      `${getEmoji("lightning")} Dificuldade: ${"🔥".repeat(session.fishDifficulty)}\n\n` +
       `**Barra de Posição:**\n\`\`\`${bar}\`\`\`${feedbackText}\n\n` +
-      `**${getEmoji("info")} Dica:** Mantenha o 🎣 na zona verde 🟢 e pressione ✅ PEGAR!`,
+      `**${getEmoji("info")} Dica:** Mantenha o 🎣 na zona verde 🟢 e pressione ${getEmoji("check")} PEGAR!`,
     )
     .addFields(
       {
         name: `${getEmoji("timer")} Status`,
-        value: `⏱️ Tentativas: ${session.attemptsRemaining}/${session.maxAttempts}\n✅ Acertos: ${session.successfulCatches}/${session.requiredCatches}`,
+        value: `${getEmoji("clock")} Tentativas: ${session.attemptsRemaining}/${session.maxAttempts}\n${getEmoji("check")} Acertos: ${session.successfulCatches}/${session.requiredCatches}`,
         inline: true
       },
       {
         name: `${getEmoji("gift")} Progresso`,
-        value: `🎯 Faltam: ${session.requiredCatches - session.successfulCatches} acertos\n📊 ${Math.floor((session.successfulCatches / session.requiredCatches) * 100)}% completo`,
+        value: `${getEmoji("dart")} Faltam: ${session.requiredCatches - session.successfulCatches} acertos\n${getEmoji("stats")} ${Math.floor((session.successfulCatches / session.requiredCatches) * 100)}% completo`,
         inline: true
       }
     )
     .setFooter({ 
-      text: `🎣 Use < e > para mover, depois pressione Fisgar quando estiver na zona verde!` 
+      text: `${getEmoji("fishing_rod")} Use < e > para mover, depois pressione Fisgar quando estiver na zona verde!` 
     })
     .setTimestamp();
 
