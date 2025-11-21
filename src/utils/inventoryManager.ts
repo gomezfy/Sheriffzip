@@ -281,7 +281,7 @@ export const ITEMS: Record<string, Item> = {
     stackable: false,
     description: "Vara de pesca profissional para pescar nos rios do oeste",
     damage: 0,
-    price: 5000,
+    price: 800,
     currency: "silver",
     maxDurability: 40,
     imageUrl: "https://i.postimg.cc/pyNMzMHD/IMG-3529.png",

@@ -1,14 +1,14 @@
 {
   "339772388566892546": {
     "items": {
-      "silver": 494660,
+      "silver": 494510,
       "saloon_token": 500000,
       "fishing_rod": 1,
       "silver_trout": 2,
       "premium_bait": 19,
-      "basic_bait": 20
+      "basic_bait": 50
     },
-    "weight": 8.613,
+    "weight": 8.913,
     "maxWeight": 100,
     "itemDurability": {
       "fishing_rod": 38
