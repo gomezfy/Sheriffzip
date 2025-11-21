@@ -1,0 +1,229 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.payment = exports.preference = void 0;
+exports.getActivePackages = getActivePackages;
+exports.createPaymentPreference = createPaymentPreference;
+exports.processPaymentNotification = processPaymentNotification;
+const mercadopago_1 = require("mercadopago");
+const db_1 = require("../../server/db");
+const schema_1 = require("../../shared/schema");
+const drizzle_orm_1 = require("drizzle-orm");
+const crypto_1 = __importDefault(require("crypto"));
+const rexBuckManager_1 = require("./rexBuckManager");
+const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
+if (!accessToken) {
+    console.warn('⚠️  MERCADOPAGO_ACCESS_TOKEN not found in environment variables');
+}
+const client = accessToken
+    ? new mercadopago_1.MercadoPagoConfig({
+        accessToken,
+        options: {
+            timeout: 5000,
+        }
+    })
+    : null;
+exports.preference = client ? new mercadopago_1.Preference(client) : null;
+exports.payment = client ? new mercadopago_1.Payment(client) : null;
+async function getActivePackages() {
+    try {
+        const packages = await db_1.db
+            .select()
+            .from(schema_1.rexBuckPackages)
+            .where((0, drizzle_orm_1.eq)(schema_1.rexBuckPackages.active, true))
+            .orderBy(schema_1.rexBuckPackages.displayOrder);
+        return packages.map((pkg) => ({
+            id: pkg.id,
+            name: pkg.name,
+            description: pkg.description,
+            amountRexBucks: pkg.amountRexBucks,
+            bonusRexBucks: pkg.bonusRexBucks,
+            priceCents: pkg.priceCents,
+            currency: pkg.currency,
+            totalRexBucks: pkg.amountRexBucks + pkg.bonusRexBucks,
+            displayPrice: formatPrice(pkg.priceCents, pkg.currency),
+        }));
+    }
+    catch (error) {
+        console.error('Error fetching packages:', error);
+        return [];
+    }
+}
+async function createPaymentPreference(userId, username, packageId) {
+    if (!exports.preference) {
+        return { success: false, error: 'Mercado Pago não está configurado. Por favor, configure MERCADOPAGO_ACCESS_TOKEN.' };
+    }
+    try {
+        const packages = await db_1.db
+            .select()
+            .from(schema_1.rexBuckPackages)
+            .where((0, drizzle_orm_1.eq)(schema_1.rexBuckPackages.id, packageId))
+            .limit(1);
+        if (packages.length === 0) {
+            return { success: false, error: 'Pacote não encontrado' };
+        }
+        const pkg = packages[0];
+        const externalReference = `rexbucks_${userId}_${crypto_1.default.randomBytes(8).toString('hex')}`;
+        const preferenceData = await exports.preference.create({
+            body: {
+                items: [
+                    {
+                        id: pkg.id,
+                        title: pkg.name,
+                        description: pkg.description,
+                        quantity: 1,
+                        unit_price: pkg.priceCents / 100,
+                        currency_id: pkg.currency,
+                    },
+                ],
+                payer: {
+                    name: username,
+                    email: `${userId}@discord.user`,
+                },
+                external_reference: externalReference,
+                notification_url: process.env.WEBHOOK_URL ? `${process.env.WEBHOOK_URL}/webhook/mercadopago` : undefined,
+                back_urls: {
+                    success: `${process.env.WEBHOOK_URL || 'http://localhost:5000'}/payment/success`,
+                    failure: `${process.env.WEBHOOK_URL || 'http://localhost:5000'}/payment/failure`,
+                    pending: `${process.env.WEBHOOK_URL || 'http://localhost:5000'}/payment/pending`,
+                },
+                auto_return: 'approved',
+                payment_methods: {
+                    excluded_payment_types: [],
+                    installments: 12,
+                },
+                statement_descriptor: 'RexBucks - Sheriff Rex',
+            },
+        });
+        // Persist payment record immediately after creating preference
+        // This ensures webhook can find the record even if it arrives quickly
+        const paymentId = crypto_1.default.randomBytes(16).toString('hex');
+        await db_1.db.insert(schema_1.mercadoPagoPayments).values({
+            id: paymentId,
+            userId,
+            packageId,
+            externalReference,
+            preferenceId: preferenceData.id,
+            status: 'pending',
+            amount: pkg.priceCents,
+            currency: pkg.currency,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        });
+        console.log(`💳 Payment preference created: ${externalReference} for user ${userId}`);
+        return {
+            success: true,
+            url: preferenceData.init_point || undefined,
+        };
+    }
+    catch (error) {
+        console.error('Error creating payment preference:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Erro ao criar preferência de pagamento',
+        };
+    }
+}
+async function processPaymentNotification(paymentId) {
+    if (!exports.payment) {
+        console.error('Mercado Pago client not initialized');
+        return { success: false, error: 'Mercado Pago not configured' };
+    }
+    try {
+        // SECURITY: Fetch payment details directly from Mercado Pago API
+        // This validates that the payment actually exists and prevents basic spoofing
+        const paymentData = await exports.payment.get({ id: paymentId });
+        if (!paymentData) {
+            console.error(`Payment ${paymentId} not found in Mercado Pago API`);
+            return { success: false, error: 'Payment not found in Mercado Pago' };
+        }
+        const externalReference = paymentData.external_reference;
+        if (!externalReference || !externalReference.startsWith('rexbucks_')) {
+            console.error(`Invalid external reference: ${externalReference}`);
+            return { success: false, error: 'Invalid external reference format' };
+        }
+        // SECURITY: Find payment record by external_reference and verify it exists
+        const existingPayments = await db_1.db
+            .select()
+            .from(schema_1.mercadoPagoPayments)
+            .where((0, drizzle_orm_1.eq)(schema_1.mercadoPagoPayments.externalReference, externalReference))
+            .limit(1);
+        if (existingPayments.length === 0) {
+            console.error(`No pending payment found for reference: ${externalReference}`);
+            return { success: false, error: 'Payment record not found - may be fraudulent' };
+        }
+        const paymentRecord = existingPayments[0];
+        // SECURITY: Verify payment wasn't already processed to prevent double-credit exploits
+        if (paymentRecord.processed) {
+            console.log(`Payment ${paymentId} already processed - preventing double credit`);
+            return { success: true }; // Not an error, idempotency check passed
+        }
+        // SECURITY: Store the MP payment ID and verify it matches if already set
+        if (paymentRecord.mpPaymentId && paymentRecord.mpPaymentId !== paymentId) {
+            console.error(`Payment ID mismatch: stored=${paymentRecord.mpPaymentId}, received=${paymentId}`);
+            return { success: false, error: 'Payment ID mismatch - potential fraud' };
+        }
+        await db_1.db
+            .update(schema_1.mercadoPagoPayments)
+            .set({
+            mpPaymentId: paymentId,
+            status: paymentData.status || 'unknown',
+            rawPayload: paymentData,
+            paidAt: paymentData.status === 'approved' ? new Date() : null,
+            updatedAt: new Date(),
+        })
+            .where((0, drizzle_orm_1.eq)(schema_1.mercadoPagoPayments.id, paymentRecord.id));
+        if (paymentData.status === 'approved') {
+            const packages = await db_1.db
+                .select()
+                .from(schema_1.rexBuckPackages)
+                .where((0, drizzle_orm_1.eq)(schema_1.rexBuckPackages.id, paymentRecord.packageId))
+                .limit(1);
+            if (packages.length === 0) {
+                console.error(`Package ${paymentRecord.packageId} not found`);
+                return { success: false, error: 'Package not found' };
+            }
+            const pkg = packages[0];
+            const totalRexBucks = pkg.amountRexBucks + pkg.bonusRexBucks;
+            const result = await (0, rexBuckManager_1.addRexBucks)(paymentRecord.userId, 'User', totalRexBucks, 'purchase', undefined, {
+                paymentId: paymentId,
+                packageId: pkg.id,
+                packageName: pkg.name,
+                amountPaid: paymentRecord.amount / 100,
+                currency: paymentRecord.currency,
+            });
+            if (result.success) {
+                await db_1.db
+                    .update(schema_1.mercadoPagoPayments)
+                    .set({
+                    processed: true,
+                    rexBuckTransactionId: result.transactionId,
+                    updatedAt: new Date(),
+                })
+                    .where((0, drizzle_orm_1.eq)(schema_1.mercadoPagoPayments.id, paymentRecord.id));
+                console.log(`✅ Payment processed: ${paymentId} - ${totalRexBucks} RexBucks credited to user ${paymentRecord.userId}`);
+                return { success: true };
+            }
+            else {
+                console.error(`Failed to credit RexBucks: ${result.error}`);
+                return { success: false, error: result.error };
+            }
+        }
+        return { success: true };
+    }
+    catch (error) {
+        console.error('Error processing payment notification:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        return { success: false, error: errorMessage };
+    }
+}
+function formatPrice(cents, currency) {
+    const value = cents / 100;
+    if (currency === 'BRL') {
+        return `R$ ${value.toFixed(2).replace('.', ',')}`;
+    }
+    return `${currency} ${value.toFixed(2)}`;
+}
+//# sourceMappingURL=mercadoPagoService.js.map
