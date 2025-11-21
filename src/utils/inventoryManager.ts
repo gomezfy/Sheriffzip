@@ -284,6 +284,7 @@ export const ITEMS: Record<string, Item> = {
     price: 5000,
     currency: "silver",
     maxDurability: 40,
+    imageUrl: "https://i.postimg.cc/pyNMzMHD/IMG-3529.png",
   },
   catfish: {
     name: "Bagre do Rio",
