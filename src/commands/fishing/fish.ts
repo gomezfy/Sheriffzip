@@ -160,7 +160,7 @@ export default {
       .setIntegrationTypes([0, 1]),
     "fish",
   ),
-  cooldown: 90, // 1.5 minutes cooldown
+  cooldown: 10, // 10 seconds cooldown
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     await interaction.deferReply();
 
