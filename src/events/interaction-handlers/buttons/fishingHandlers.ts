@@ -148,7 +148,7 @@ export async function handleFishCatch(interaction: ButtonInteraction): Promise<v
   if (fishingSessionManager.hasWon(userId)) {
     // VITÓRIA - Pegou o peixe! (usar transaction lock)
     const fishItem = session.fishRewards.fish;
-    const captureMessage = getRandomMessage(CAPTURE_MESSAGES);
+    const captureMessage = getRandomMessage(CAPTURE_MESSAGES).replace("peixe", session.fishName);
     
     await transactionLock.withLock(userId, async () => {
       addItem(userId, fishItem.id, fishItem.amount);
@@ -157,8 +157,8 @@ export async function handleFishCatch(interaction: ButtonInteraction): Promise<v
     });
 
     const successEmb = successEmbed(
-      `${getEmoji("trophy")} Peixe Capturado!`,
-      `${captureMessage}\n\n` +
+      `${getEmoji("trophy")} ${session.fishName} Capturado!`,
+      `${captureMessage}!\n\n` +
         `Você pescou um **${session.fishName}**! ${session.fishEmoji}\n\n` +
         `**Recompensas:**\n` +
         `${session.fishEmoji} ${session.fishName} x${fishItem.amount}\n` +
@@ -177,12 +177,12 @@ export async function handleFishCatch(interaction: ButtonInteraction): Promise<v
   // Verificar se perdeu
   if (fishingSessionManager.hasLost(userId)) {
     // DERROTA - Ficou sem tentativas
-    const escapeMessage = getRandomMessage(ESCAPE_MESSAGES);
+    const escapeMessage = getRandomMessage(ESCAPE_MESSAGES).replace("peixe", session.fishName);
     const lostEmbed = new EmbedBuilder()
       .setColor("#ef4444")
-      .setTitle("💔 O Peixe Escapou!")
+      .setTitle(`💔 O ${session.fishName} Escapou!`)
       .setDescription(
-        `${escapeMessage}\n\n` +
+        `${escapeMessage}!\n\n` +
         `Infelizmente, você não conseguiu acertar a zona verde o suficiente.\n\n` +
         `**Estatísticas Finais:**\n` +
         `✅ Acertos: ${session.successfulCatches}/${session.requiredCatches}\n` +
@@ -217,10 +217,10 @@ async function updateFishingEmbed(
   let feedbackText = "";
   if (lastCatchAttempt !== undefined) {
     if (lastCatchAttempt) {
-      const successMsg = getRandomMessage(SUCCESS_MESSAGES);
+      const successMsg = getRandomMessage(SUCCESS_MESSAGES).replace("peixe", session.fishName);
       feedbackText = `\n${successMsg}\n**Acertos:** ${session.successfulCatches}/${session.requiredCatches}`;
     } else {
-      const failMsg = getRandomMessage(FAILURE_MESSAGES);
+      const failMsg = getRandomMessage(FAILURE_MESSAGES).replace("peixe", session.fishName);
       feedbackText = `\n${failMsg}`;
     }
   }

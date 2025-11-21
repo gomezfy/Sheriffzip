@@ -117,13 +117,13 @@ async function handleFishCatch(interaction) {
     if (fishingSessionManager_1.fishingSessionManager.hasWon(userId)) {
         // VITÓRIA - Pegou o peixe! (usar transaction lock)
         const fishItem = session.fishRewards.fish;
-        const captureMessage = getRandomMessage(CAPTURE_MESSAGES);
+        const captureMessage = getRandomMessage(CAPTURE_MESSAGES).replace("peixe", session.fishName);
         await transactionLock_1.transactionLock.withLock(userId, async () => {
             (0, inventoryManager_1.addItem)(userId, fishItem.id, fishItem.amount);
             (0, inventoryManager_1.reduceDurability)(userId, "fishing_rod", 1);
             (0, xpManager_1.addXp)(userId, session.fishExperience);
         });
-        const successEmb = (0, embeds_1.successEmbed)(`${(0, customEmojis_1.getEmoji)("trophy")} Peixe Capturado!`, `${captureMessage}\n\n` +
+        const successEmb = (0, embeds_1.successEmbed)(`${(0, customEmojis_1.getEmoji)("trophy")} ${session.fishName} Capturado!`, `${captureMessage}!\n\n` +
             `Você pescou um **${session.fishName}**! ${session.fishEmoji}\n\n` +
             `**Recompensas:**\n` +
             `${session.fishEmoji} ${session.fishName} x${fishItem.amount}\n` +
@@ -139,11 +139,11 @@ async function handleFishCatch(interaction) {
     // Verificar se perdeu
     if (fishingSessionManager_1.fishingSessionManager.hasLost(userId)) {
         // DERROTA - Ficou sem tentativas
-        const escapeMessage = getRandomMessage(ESCAPE_MESSAGES);
+        const escapeMessage = getRandomMessage(ESCAPE_MESSAGES).replace("peixe", session.fishName);
         const lostEmbed = new discord_js_1.EmbedBuilder()
             .setColor("#ef4444")
-            .setTitle("💔 O Peixe Escapou!")
-            .setDescription(`${escapeMessage}\n\n` +
+            .setTitle(`💔 O ${session.fishName} Escapou!`)
+            .setDescription(`${escapeMessage}!\n\n` +
             `Infelizmente, você não conseguiu acertar a zona verde o suficiente.\n\n` +
             `**Estatísticas Finais:**\n` +
             `✅ Acertos: ${session.successfulCatches}/${session.requiredCatches}\n` +
@@ -169,11 +169,11 @@ async function updateFishingEmbed(interaction, userId, lastCatchAttempt) {
     let feedbackText = "";
     if (lastCatchAttempt !== undefined) {
         if (lastCatchAttempt) {
-            const successMsg = getRandomMessage(SUCCESS_MESSAGES);
+            const successMsg = getRandomMessage(SUCCESS_MESSAGES).replace("peixe", session.fishName);
             feedbackText = `\n${successMsg}\n**Acertos:** ${session.successfulCatches}/${session.requiredCatches}`;
         }
         else {
-            const failMsg = getRandomMessage(FAILURE_MESSAGES);
+            const failMsg = getRandomMessage(FAILURE_MESSAGES).replace("peixe", session.fishName);
             feedbackText = `\n${failMsg}`;
         }
     }
