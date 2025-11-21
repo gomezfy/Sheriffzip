@@ -30,7 +30,7 @@ interface Fish {
 const FISHES: Fish[] = [
   {
     name: "Bagre do Rio",
-    emoji: "🐟",
+    emoji: getEmoji("catfish"),
     rarity: "COMUM",
     rarityColor: "#808080",
     chance: 35,
@@ -44,7 +44,7 @@ const FISHES: Fish[] = [
   },
   {
     name: "Truta Prateada",
-    emoji: "🐟",
+    emoji: getEmoji("silver_trout"),
     rarity: "INCOMUM",
     rarityColor: "#4ade80",
     chance: 25,
@@ -58,7 +58,7 @@ const FISHES: Fish[] = [
   },
   {
     name: "Salmão Selvagem",
-    emoji: "🐟",
+    emoji: getEmoji("wild_salmon"),
     rarity: "RARO",
     rarityColor: "#3b82f6",
     chance: 18,
@@ -72,7 +72,7 @@ const FISHES: Fish[] = [
   },
   {
     name: "Lúcio Gigante",
-    emoji: "🐟",
+    emoji: getEmoji("giant_pike"),
     rarity: "ÉPICO",
     rarityColor: "#a855f7",
     chance: 12,
@@ -86,7 +86,7 @@ const FISHES: Fish[] = [
   },
   {
     name: "Esturjão Dourado",
-    emoji: "🐠",
+    emoji: getEmoji("golden_sturgeon"),
     rarity: "LENDÁRIO",
     rarityColor: "#f59e0b",
     chance: 7,
@@ -100,7 +100,7 @@ const FISHES: Fish[] = [
   },
   {
     name: "Peixe Mítico do Oeste",
-    emoji: "🐡",
+    emoji: getEmoji("mythic_western_fish"),
     rarity: "MÍTICO",
     rarityColor: "#d4af37",
     chance: 3,

@@ -11,7 +11,7 @@ const customEmojis_1 = require("../../utils/customEmojis");
 const FISHES = [
     {
         name: "Bagre do Rio",
-        emoji: "🐟",
+        emoji: (0, customEmojis_1.getEmoji)("catfish"),
         rarity: "COMUM",
         rarityColor: "#808080",
         chance: 35,
@@ -25,7 +25,7 @@ const FISHES = [
     },
     {
         name: "Truta Prateada",
-        emoji: "🐟",
+        emoji: (0, customEmojis_1.getEmoji)("silver_trout"),
         rarity: "INCOMUM",
         rarityColor: "#4ade80",
         chance: 25,
@@ -39,7 +39,7 @@ const FISHES = [
     },
     {
         name: "Salmão Selvagem",
-        emoji: "🐟",
+        emoji: (0, customEmojis_1.getEmoji)("wild_salmon"),
         rarity: "RARO",
         rarityColor: "#3b82f6",
         chance: 18,
@@ -53,7 +53,7 @@ const FISHES = [
     },
     {
         name: "Lúcio Gigante",
-        emoji: "🐟",
+        emoji: (0, customEmojis_1.getEmoji)("giant_pike"),
         rarity: "ÉPICO",
         rarityColor: "#a855f7",
         chance: 12,
@@ -67,7 +67,7 @@ const FISHES = [
     },
     {
         name: "Esturjão Dourado",
-        emoji: "🐠",
+        emoji: (0, customEmojis_1.getEmoji)("golden_sturgeon"),
         rarity: "LENDÁRIO",
         rarityColor: "#f59e0b",
         chance: 7,
@@ -81,7 +81,7 @@ const FISHES = [
     },
     {
         name: "Peixe Mítico do Oeste",
-        emoji: "🐡",
+        emoji: (0, customEmojis_1.getEmoji)("mythic_western_fish"),
         rarity: "MÍTICO",
         rarityColor: "#d4af37",
         chance: 3,

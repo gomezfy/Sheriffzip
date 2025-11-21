@@ -19,6 +19,18 @@ export const APPLICATION_EMOJIS: { [key: string]: string } = {
   REVOLVER_VAQUEIRO: "<:revolver_vaqueiro:1440186055985987765>",
   ESCOPETA: "<:escopeta:1440186054597541999>",
   
+  // Pesca
+  GIANT_PIKE: "<:giant_pike:1441328812209209354>",
+  BASIC_BAIT: "<:basic_bait:1441328810942533654>",
+  MYTHIC_WESTERN_FISH: "<:mythic_western_fish:1441328809528787004>",
+  CATFISH: "<:catfish:1441328808090402816>",
+  EAGLE_FEATHER: "<:eagle_feather:1441328805917626490>",
+  FISHING_ROD: "<:fishing_rod:1441328804818718720>",
+  GOLDEN_STURGEON: "<:golden_sturgeon:1441328803207975092>",
+  SILVER_TROUT: "<:silver_trout:1441328801433784401>",
+  WILD_SALMON: "<:wild_salmon:1441328799454199970>",
+  PREMIUM_BAIT: "<:premium_bait:1441328797684203570>",
+  
   // Ícones de Interface
   LOCK: "<:lock_west:1440186000612659201>",
   WARNING: "<:warning_west:1440185999153037457>",
@@ -141,6 +153,17 @@ export const EMOJI_TEXT = {
   WOLF_PELT: "🐺",
   BISON_PELT: "🦬",
   BEAR_PELT: "🐻",
+  // Pesca (fallbacks)
+  GIANT_PIKE: "🐟",
+  BASIC_BAIT: "🪱",
+  MYTHIC_WESTERN_FISH: "🐠",
+  CATFISH: "🐟",
+  EAGLE_FEATHER: "🪶",
+  FISHING_ROD: "🎣",
+  GOLDEN_STURGEON: "🐟",
+  SILVER_TROUT: "🐟",
+  WILD_SALMON: "🐟",
+  PREMIUM_BAIT: "🪱",
   // Emojis adicionais
   SHERIFF_BADGE: "👮",
   DESERT: "🏜️",
@@ -410,4 +433,34 @@ export function getWolfPeltEmoji(): string {
 }
 export function getBisonPeltEmoji(): string {
   return getEmoji("bison_pelt");
+}
+export function getGiantPikeEmoji(): string {
+  return getEmoji("giant_pike");
+}
+export function getBasicBaitEmoji(): string {
+  return getEmoji("basic_bait");
+}
+export function getMythicWesternFishEmoji(): string {
+  return getEmoji("mythic_western_fish");
+}
+export function getCatfishEmoji(): string {
+  return getEmoji("catfish");
+}
+export function getEagleFeatherEmoji(): string {
+  return getEmoji("eagle_feather");
+}
+export function getFishingRodEmoji(): string {
+  return getEmoji("fishing_rod");
+}
+export function getGoldenSturgeonEmoji(): string {
+  return getEmoji("golden_sturgeon");
+}
+export function getSilverTroutEmoji(): string {
+  return getEmoji("silver_trout");
+}
+export function getWildSalmonEmoji(): string {
+  return getEmoji("wild_salmon");
+}
+export function getPremiumBaitEmoji(): string {
+  return getEmoji("premium_bait");
 }

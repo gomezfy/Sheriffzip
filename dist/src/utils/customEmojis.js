@@ -71,6 +71,16 @@ exports.getRabbitPeltEmoji = getRabbitPeltEmoji;
 exports.getDeerPeltEmoji = getDeerPeltEmoji;
 exports.getWolfPeltEmoji = getWolfPeltEmoji;
 exports.getBisonPeltEmoji = getBisonPeltEmoji;
+exports.getGiantPikeEmoji = getGiantPikeEmoji;
+exports.getBasicBaitEmoji = getBasicBaitEmoji;
+exports.getMythicWesternFishEmoji = getMythicWesternFishEmoji;
+exports.getCatfishEmoji = getCatfishEmoji;
+exports.getEagleFeatherEmoji = getEagleFeatherEmoji;
+exports.getFishingRodEmoji = getFishingRodEmoji;
+exports.getGoldenSturgeonEmoji = getGoldenSturgeonEmoji;
+exports.getSilverTroutEmoji = getSilverTroutEmoji;
+exports.getWildSalmonEmoji = getWildSalmonEmoji;
+exports.getPremiumBaitEmoji = getPremiumBaitEmoji;
 const database_1 = require("./database");
 // Application Emojis (Emojis do Aplicativo Discord)
 // Configure os IDs após fazer upload no Discord Developer Portal > Seu App > Emojis
@@ -87,6 +97,17 @@ exports.APPLICATION_EMOJIS = {
     RIFLE_DE_CACA: "<:rifle_de_caca:1440186058024157236>",
     REVOLVER_VAQUEIRO: "<:revolver_vaqueiro:1440186055985987765>",
     ESCOPETA: "<:escopeta:1440186054597541999>",
+    // Pesca
+    GIANT_PIKE: "<:giant_pike:1441328812209209354>",
+    BASIC_BAIT: "<:basic_bait:1441328810942533654>",
+    MYTHIC_WESTERN_FISH: "<:mythic_western_fish:1441328809528787004>",
+    CATFISH: "<:catfish:1441328808090402816>",
+    EAGLE_FEATHER: "<:eagle_feather:1441328805917626490>",
+    FISHING_ROD: "<:fishing_rod:1441328804818718720>",
+    GOLDEN_STURGEON: "<:golden_sturgeon:1441328803207975092>",
+    SILVER_TROUT: "<:silver_trout:1441328801433784401>",
+    WILD_SALMON: "<:wild_salmon:1441328799454199970>",
+    PREMIUM_BAIT: "<:premium_bait:1441328797684203570>",
     // Ícones de Interface
     LOCK: "<:lock_west:1440186000612659201>",
     WARNING: "<:warning_west:1440185999153037457>",
@@ -205,6 +226,17 @@ exports.EMOJI_TEXT = {
     WOLF_PELT: "🐺",
     BISON_PELT: "🦬",
     BEAR_PELT: "🐻",
+    // Pesca (fallbacks)
+    GIANT_PIKE: "🐟",
+    BASIC_BAIT: "🪱",
+    MYTHIC_WESTERN_FISH: "🐠",
+    CATFISH: "🐟",
+    EAGLE_FEATHER: "🪶",
+    FISHING_ROD: "🎣",
+    GOLDEN_STURGEON: "🐟",
+    SILVER_TROUT: "🐟",
+    WILD_SALMON: "🐟",
+    PREMIUM_BAIT: "🪱",
     // Emojis adicionais
     SHERIFF_BADGE: "👮",
     DESERT: "🏜️",
@@ -462,5 +494,35 @@ function getWolfPeltEmoji() {
 }
 function getBisonPeltEmoji() {
     return getEmoji("bison_pelt");
+}
+function getGiantPikeEmoji() {
+    return getEmoji("giant_pike");
+}
+function getBasicBaitEmoji() {
+    return getEmoji("basic_bait");
+}
+function getMythicWesternFishEmoji() {
+    return getEmoji("mythic_western_fish");
+}
+function getCatfishEmoji() {
+    return getEmoji("catfish");
+}
+function getEagleFeatherEmoji() {
+    return getEmoji("eagle_feather");
+}
+function getFishingRodEmoji() {
+    return getEmoji("fishing_rod");
+}
+function getGoldenSturgeonEmoji() {
+    return getEmoji("golden_sturgeon");
+}
+function getSilverTroutEmoji() {
+    return getEmoji("silver_trout");
+}
+function getWildSalmonEmoji() {
+    return getEmoji("wild_salmon");
+}
+function getPremiumBaitEmoji() {
+    return getEmoji("premium_bait");
 }
 //# sourceMappingURL=customEmojis.js.map

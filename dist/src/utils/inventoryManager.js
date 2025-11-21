@@ -149,7 +149,8 @@ exports.ITEMS = {
     },
     basic_bait: {
         name: "Isca Básica",
-        emoji: "🪱",
+        emoji: customEmojis_1.EMOJI_TEXT.BASIC_BAIT,
+        customEmoji: "BASIC_BAIT",
         weight: 0.01,
         stackable: true,
         description: "Minhoca comum para pesca básica. Atrai peixes comuns e incomuns.",
@@ -158,7 +159,8 @@ exports.ITEMS = {
     },
     premium_bait: {
         name: "Isca Premium",
-        emoji: "🦗",
+        emoji: customEmojis_1.EMOJI_TEXT.PREMIUM_BAIT,
+        customEmoji: "PREMIUM_BAIT",
         weight: 0.01,
         stackable: true,
         description: "Grilo vivo de qualidade superior. Aumenta muito a chance de pescar peixes raros, épicos e lendários!",
@@ -267,7 +269,8 @@ exports.ITEMS = {
     },
     eagle_feather: {
         name: "Pena de Águia",
-        emoji: "🪶",
+        emoji: customEmojis_1.EMOJI_TEXT.EAGLE_FEATHER,
+        customEmoji: "EAGLE_FEATHER",
         weight: 0.01,
         stackable: true,
         description: "Pena rara de águia dourada, símbolo de prestígio",
@@ -276,7 +279,8 @@ exports.ITEMS = {
     },
     fishing_rod: {
         name: "Vara de Pesca",
-        emoji: "🎣",
+        emoji: customEmojis_1.EMOJI_TEXT.FISHING_ROD,
+        customEmoji: "FISHING_ROD",
         weight: 1.5,
         stackable: false,
         description: "Vara de pesca profissional para pescar nos rios do oeste",
@@ -287,7 +291,8 @@ exports.ITEMS = {
     },
     catfish: {
         name: "Bagre do Rio",
-        emoji: "🐟",
+        emoji: customEmojis_1.EMOJI_TEXT.CATFISH,
+        customEmoji: "CATFISH",
         weight: 1.5,
         stackable: true,
         description: "Bagre comum pescado nos rios do oeste",
@@ -296,7 +301,8 @@ exports.ITEMS = {
     },
     silver_trout: {
         name: "Truta Prateada",
-        emoji: "🐟",
+        emoji: customEmojis_1.EMOJI_TEXT.SILVER_TROUT,
+        customEmoji: "SILVER_TROUT",
         weight: 2,
         stackable: true,
         description: "Truta prateada de qualidade média",
@@ -305,7 +311,8 @@ exports.ITEMS = {
     },
     wild_salmon: {
         name: "Salmão Selvagem",
-        emoji: "🐟",
+        emoji: customEmojis_1.EMOJI_TEXT.WILD_SALMON,
+        customEmoji: "WILD_SALMON",
         weight: 3,
         stackable: true,
         description: "Salmão selvagem raro e valioso",
@@ -314,7 +321,8 @@ exports.ITEMS = {
     },
     giant_pike: {
         name: "Lúcio Gigante",
-        emoji: "🐟",
+        emoji: customEmojis_1.EMOJI_TEXT.GIANT_PIKE,
+        customEmoji: "GIANT_PIKE",
         weight: 5,
         stackable: true,
         description: "Lúcio gigante, uma pesca épica!",
@@ -323,7 +331,8 @@ exports.ITEMS = {
     },
     golden_sturgeon: {
         name: "Esturjão Dourado",
-        emoji: "🐠",
+        emoji: customEmojis_1.EMOJI_TEXT.GOLDEN_STURGEON,
+        customEmoji: "GOLDEN_STURGEON",
         weight: 8,
         stackable: true,
         description: "Esturjão dourado lendário, extremamente valioso",
@@ -332,7 +341,8 @@ exports.ITEMS = {
     },
     mythic_western_fish: {
         name: "Peixe Mítico do Oeste",
-        emoji: "🐡",
+        emoji: customEmojis_1.EMOJI_TEXT.MYTHIC_WESTERN_FISH,
+        customEmoji: "MYTHIC_WESTERN_FISH",
         weight: 10,
         stackable: true,
         description: "Peixe mítico lendário das águas do oeste, raríssimo!",
