@@ -282,21 +282,18 @@ export default {
 
     const leftButton = new ButtonBuilder()
       .setCustomId(`fish_left_${userId}`)
-      .setLabel("🔙 Esquerda")
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji("◀️");
+      .setLabel("<")
+      .setStyle(ButtonStyle.Secondary);
 
     const rightButton = new ButtonBuilder()
       .setCustomId(`fish_right_${userId}`)
-      .setLabel("🔜 Direita")
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji("▶️");
+      .setLabel(">")
+      .setStyle(ButtonStyle.Secondary);
 
     const catchButton = new ButtonBuilder()
       .setCustomId(`fish_catch_${userId}`)
-      .setLabel("✅ PEGAR!")
-      .setStyle(ButtonStyle.Success)
-      .setEmoji("🎣");
+      .setLabel("Fisgar")
+      .setStyle(ButtonStyle.Success);
 
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
       leftButton,

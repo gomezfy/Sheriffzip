@@ -158,19 +158,16 @@ async function updateFishingEmbed(interaction, userId, lastCatchAttempt) {
         .setTimestamp();
     const leftButton = new discord_js_1.ButtonBuilder()
         .setCustomId(`fish_left_${userId}`)
-        .setLabel("🔙 Esquerda")
-        .setStyle(discord_js_1.ButtonStyle.Primary)
-        .setEmoji("◀️");
+        .setLabel("<")
+        .setStyle(discord_js_1.ButtonStyle.Secondary);
     const rightButton = new discord_js_1.ButtonBuilder()
         .setCustomId(`fish_right_${userId}`)
-        .setLabel("🔜 Direita")
-        .setStyle(discord_js_1.ButtonStyle.Primary)
-        .setEmoji("▶️");
+        .setLabel(">")
+        .setStyle(discord_js_1.ButtonStyle.Secondary);
     const catchButton = new discord_js_1.ButtonBuilder()
         .setCustomId(`fish_catch_${userId}`)
-        .setLabel("✅ PEGAR!")
-        .setStyle(discord_js_1.ButtonStyle.Success)
-        .setEmoji("🎣");
+        .setLabel("Fisgar")
+        .setStyle(discord_js_1.ButtonStyle.Success);
     const row = new discord_js_1.ActionRowBuilder().addComponents(leftButton, catchButton, rightButton);
     await interaction.editReply({
         embeds: [fishEmbed],
