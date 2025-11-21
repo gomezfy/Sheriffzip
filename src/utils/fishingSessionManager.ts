@@ -275,22 +275,27 @@ class FishingSessionManager {
     const session = this.getSession(userId);
     if (!session) return "";
 
-    const barLength = 40; // Aumentado para melhor visibilidade
+    const barLength = 25;
     const position = Math.floor((session.position / 100) * barLength);
     const zoneStart = Math.floor((session.targetZone.min / 100) * barLength);
     const zoneEnd = Math.floor((session.targetZone.max / 100) * barLength);
 
-    let bar = "║"; // Borda esquerda
+    let bar = "🌊";
     for (let i = 0; i < barLength; i++) {
       if (i === position) {
-        bar += "🎣"; // Posição do jogador (sempre visível)
+        bar += "🎣"; // Posição do jogador
       } else if (i >= zoneStart && i <= zoneEnd) {
-        bar += "█"; // Zona alvo (mais sólido)
+        bar += "🟩"; // Zona alvo em verde
       } else {
-        bar += "░"; // Espaço vazio (mais claro)
+        bar += "🟦"; // Espaço vazio em azul
       }
     }
-    bar += "║"; // Borda direita
+    bar += "🌊";
+
+    // Adiciona informações de posição
+    const positionPercent = Math.round(session.position);
+    const zonePercent = Math.round((session.targetZone.max - session.targetZone.min) / 2);
+    bar += `\n📍 Posição: ${positionPercent}% | 🎯 Zona: ${zonePercent}%`;
 
     return bar;
   }
