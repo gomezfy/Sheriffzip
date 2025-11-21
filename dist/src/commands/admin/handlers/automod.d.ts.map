@@ -1,1 +1,0 @@
-{"version":3,"file":"automod.d.ts","sourceRoot":"","sources":["../../../../../src/commands/admin/handlers/automod.ts"],"names":[],"mappings":"AAAA,OAAO,EACL,2BAA2B,EAI5B,MAAM,YAAY,CAAC;AAQpB,wBAAsB,aAAa,CACjC,WAAW,EAAE,2BAA2B,EACxC,UAAU,EAAE,MAAM,GACjB,OAAO,CAAC,IAAI,CAAC,CAiIf;AAED,wBAAsB,gBAAgB,CACpC,WAAW,EAAE,2BAA2B,EACxC,UAAU,EAAE,MAAM,GACjB,OAAO,CAAC,IAAI,CAAC,CAuGf"}
