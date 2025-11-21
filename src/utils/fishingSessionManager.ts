@@ -283,7 +283,7 @@ class FishingSessionManager {
     let bar = "🌊";
     for (let i = 0; i < barLength; i++) {
       if (i === position) {
-        bar += "🪝"; // Anzol (Posição do jogador)
+        bar += "🎣"; // Vara de pesca (Posição do jogador)
       } else if (i >= zoneStart && i <= zoneEnd) {
         bar += "🟩"; // Zona alvo em verde
       } else {
