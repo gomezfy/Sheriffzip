@@ -142,9 +142,9 @@ exports.default = {
         // Check if user has fishing rod
         const rodCount = (0, inventoryManager_1.getItem)(userId, "fishing_rod");
         if (rodCount === 0) {
-            const embed = (0, embeds_1.warningEmbed)("🚫 Vara de Pesca Necessária", "Você precisa de uma **Vara de Pesca** para ir pescar!\n\n" +
-                "💰 Compre uma vara na armaria por **5.000 moedas de prata**.\n" +
-                "Use `/armaria` para ver os itens disponíveis.", "Equipamento necessário para pescar");
+            const embed = (0, embeds_1.warningEmbed)(`${(0, customEmojis_1.getEmoji)("cancel")} Vara de Pesca Necessária`, `Você precisa de uma **Vara de Pesca** ${(0, customEmojis_1.getEmoji)("fishing_rod")} para ir pescar!\n\n` +
+                `${(0, customEmojis_1.getEmoji)("gold_bar")} Compre uma vara na armaria por **5.000 moedas de prata**.\n` +
+                `${(0, customEmojis_1.getEmoji)("info")} Use \`/armaria\` para ver os itens disponíveis.`, "Equipamento necessário para pescar");
             await interaction.editReply({ embeds: [embed] });
             return;
         }
@@ -153,26 +153,57 @@ exports.default = {
         const premiumBaitCount = (0, inventoryManager_1.getItem)(userId, "premium_bait");
         const hasBait = basicBaitCount > 0 || premiumBaitCount > 0;
         if (!hasBait) {
-            const embed = (0, embeds_1.warningEmbed)(`${(0, customEmojis_1.getEmoji)("basic_bait")} Isca Necessária`, "Você precisa de **Isca** para pescar!\n\n" +
-                "💰 Compre iscas no **Hunter's Store** (`/hunterstore`).\n" +
-                "🎣 Cada pesca consome 1 isca.\n\n" +
-                "**Tipos de isca:**\n" +
+            const embed = (0, embeds_1.warningEmbed)(`${(0, customEmojis_1.getEmoji)("basic_bait")} Isca Necessária`, `Você precisa de **Isca** para pescar!\n\n` +
+                `${(0, customEmojis_1.getEmoji)("moneybag")} Compre iscas no **Hunter's Store** (\`/hunterstore\`).\n` +
+                `${(0, customEmojis_1.getEmoji)("gift")} Cada pesca consome 1 isca.\n\n` +
+                `**Tipos de isca:**\n` +
                 `${(0, customEmojis_1.getEmoji)("basic_bait")} **Isca Básica** - Peixes comuns e incomuns\n` +
-                `${(0, customEmojis_1.getEmoji)("premium_bait")} **Isca Premium** - Aumenta chance de peixes raros!`, "Isca necessária para pescar");
+                `${(0, customEmojis_1.getEmoji)("premium_bait")} **Isca Premium** ${(0, customEmojis_1.getEmoji)("sparkles")} - Aumenta chance de peixes raros!`, "Isca necessária para pescar");
             await interaction.editReply({ embeds: [embed] });
             return;
         }
         // Check if user already has an active fishing session
         const existingSession = fishingSessionManager_1.fishingSessionManager.getSession(userId);
         if (existingSession) {
-            const embed = (0, embeds_1.warningEmbed)("🎣 Pesca em Andamento", `Você já está pescando um **${existingSession.fishName}**!\n\n` +
-                `Tentativas restantes: **${existingSession.attemptsRemaining}/${existingSession.maxAttempts}**\n` +
-                `Acertos: **${existingSession.successfulCatches}/${existingSession.requiredCatches}**`, "Termine sua pesca atual primeiro");
+            const embed = (0, embeds_1.warningEmbed)(`${(0, customEmojis_1.getEmoji)("fishing_rod")} Pesca em Andamento`, `Você já está pescando um **${existingSession.fishName}**!\n\n` +
+                `${(0, customEmojis_1.getEmoji)("timer")} Tentativas restantes: **${existingSession.attemptsRemaining}/${existingSession.maxAttempts}**\n` +
+                `${(0, customEmojis_1.getEmoji)("check")} Acertos: **${existingSession.successfulCatches}/${existingSession.requiredCatches}**`, "Termine sua pesca atual primeiro");
             await interaction.editReply({ embeds: [embed] });
             return;
         }
-        // Select a random fish (premium bait increases chances of rare fish)
-        const usePremiumBait = premiumBaitCount > 0;
+        // Show bait selection if user has both types of bait
+        let usePremiumBait;
+        if (basicBaitCount > 0 && premiumBaitCount > 0) {
+            // User has both bait types - show selection menu
+            const selectEmbed = new discord_js_1.EmbedBuilder()
+                .setColor("#DAA520")
+                .setTitle(`${(0, customEmojis_1.getEmoji)("basic_bait")} Qual Isca Usar?`)
+                .setDescription(`Escolha qual isca deseja usar para a pesca:\n\n` +
+                `${(0, customEmojis_1.getEmoji)("basic_bait")} **Isca Básica** (${basicBaitCount} disponível)\n` +
+                `Peixes comuns e incomuns\n\n` +
+                `${(0, customEmojis_1.getEmoji)("premium_bait")} **Isca Premium** ${(0, customEmojis_1.getEmoji)("sparkles")} (${premiumBaitCount} disponível)\n` +
+                `Aumenta chance de peixes raros!`)
+                .setFooter({ text: "Selecione a isca que deseja usar" })
+                .setTimestamp();
+            const basicButton = new discord_js_1.ButtonBuilder()
+                .setCustomId(`fish_bait_basic_${userId}`)
+                .setLabel("Isca Básica")
+                .setStyle(discord_js_1.ButtonStyle.Secondary)
+                .setEmoji((0, customEmojis_1.getEmoji)("basic_bait"));
+            const premiumButton = new discord_js_1.ButtonBuilder()
+                .setCustomId(`fish_bait_premium_${userId}`)
+                .setLabel("Isca Premium")
+                .setStyle(discord_js_1.ButtonStyle.Primary)
+                .setEmoji((0, customEmojis_1.getEmoji)("premium_bait"));
+            const row = new discord_js_1.ActionRowBuilder().addComponents(basicButton, premiumButton);
+            await interaction.editReply({
+                embeds: [selectEmbed],
+                components: [row],
+            });
+            return;
+        }
+        // User has only one type of bait - auto-select
+        usePremiumBait = premiumBaitCount > 0;
         const fish = selectFish(usePremiumBait);
         if (!fish) {
             const embed = (0, embeds_1.errorEmbed)("❌ Erro na Pesca", "Ocorreu um erro ao procurar peixes. Tente novamente!");
@@ -200,14 +231,14 @@ exports.default = {
             `${fish.emoji} **${fish.name}**\n\n` +
             `${(0, customEmojis_1.getEmoji)("star")} **Raridade:** ${fish.rarity}\n` +
             `${(0, customEmojis_1.getEmoji)("lightning")} **Dificuldade:** ${"🔥".repeat(fish.difficulty)}\n` +
-            `${(0, customEmojis_1.getEmoji)("dart")} **Acertos Necessários:** ${fish.requiredCatches}\n\n` +
+            `${(0, customEmojis_1.getEmoji)("check")} **Acertos Necessários:** ${fish.requiredCatches}\n\n` +
             `**${(0, customEmojis_1.getEmoji)("info")} COMO JOGAR:**\n` +
             `Use os botões < e > para manter o 🎣 na zona verde 🟢!\n` +
             `Acerte a zona ${fish.requiredCatches} vezes para pegar o peixe!\n\n` +
             `**Barra de Posição:**\n\`\`\`${bar}\`\`\``)
             .addFields({
             name: `${(0, customEmojis_1.getEmoji)("timer")} Status`,
-            value: `⏱️ Tentativas: ${session.attemptsRemaining}/${session.maxAttempts}\n✅ Acertos: ${session.successfulCatches}/${session.requiredCatches}`,
+            value: `${(0, customEmojis_1.getEmoji)("clock")} Tentativas: ${session.attemptsRemaining}/${session.maxAttempts}\n${(0, customEmojis_1.getEmoji)("check")} Acertos: ${session.successfulCatches}/${session.requiredCatches}`,
             inline: true
         }, {
             name: `${(0, customEmojis_1.getEmoji)("gift")} Recompensas`,
@@ -215,7 +246,7 @@ exports.default = {
             inline: true
         })
             .setFooter({
-            text: `🎣 Mantenha o 🎣 na zona verde 🟢 e pressione os botões no momento certo!`
+            text: `${(0, customEmojis_1.getEmoji)("fishing_rod")} Mantenha o 🎣 na zona verde 🟢 e pressione os botões no momento certo!`
         })
             .setTimestamp();
         const leftButton = new discord_js_1.ButtonBuilder()

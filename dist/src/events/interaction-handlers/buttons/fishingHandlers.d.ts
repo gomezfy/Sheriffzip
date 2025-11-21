@@ -11,4 +11,12 @@ export declare function handleFishRight(interaction: ButtonInteraction): Promise
  * Handler para tentar pegar o peixe
  */
 export declare function handleFishCatch(interaction: ButtonInteraction): Promise<void>;
+/**
+ * Handler para seleção de Isca Básica
+ */
+export declare function handleFishBaitBasic(interaction: ButtonInteraction): Promise<void>;
+/**
+ * Handler para seleção de Isca Premium
+ */
+export declare function handleFishBaitPremium(interaction: ButtonInteraction): Promise<void>;
 //# sourceMappingURL=fishingHandlers.d.ts.map

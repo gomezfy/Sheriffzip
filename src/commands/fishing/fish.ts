@@ -206,18 +206,60 @@ export default {
     const existingSession = fishingSessionManager.getSession(userId);
     if (existingSession) {
       const embed = warningEmbed(
-        "🎣 Pesca em Andamento",
+        `${getEmoji("fishing_rod")} Pesca em Andamento`,
         `Você já está pescando um **${existingSession.fishName}**!\n\n` +
-          `Tentativas restantes: **${existingSession.attemptsRemaining}/${existingSession.maxAttempts}**\n` +
-          `Acertos: **${existingSession.successfulCatches}/${existingSession.requiredCatches}**`,
+          `${getEmoji("timer")} Tentativas restantes: **${existingSession.attemptsRemaining}/${existingSession.maxAttempts}**\n` +
+          `${getEmoji("check")} Acertos: **${existingSession.successfulCatches}/${existingSession.requiredCatches}**`,
         "Termine sua pesca atual primeiro",
       );
       await interaction.editReply({ embeds: [embed] });
       return;
     }
 
-    // Select a random fish (premium bait increases chances of rare fish)
-    const usePremiumBait = premiumBaitCount > 0;
+    // Show bait selection if user has both types of bait
+    let usePremiumBait: boolean;
+    
+    if (basicBaitCount > 0 && premiumBaitCount > 0) {
+      // User has both bait types - show selection menu
+      const selectEmbed = new EmbedBuilder()
+        .setColor("#DAA520")
+        .setTitle(`${getEmoji("basic_bait")} Qual Isca Usar?`)
+        .setDescription(
+          `Escolha qual isca deseja usar para a pesca:\n\n` +
+          `${getEmoji("basic_bait")} **Isca Básica** (${basicBaitCount} disponível)\n` +
+          `Peixes comuns e incomuns\n\n` +
+          `${getEmoji("premium_bait")} **Isca Premium** ${getEmoji("sparkles")} (${premiumBaitCount} disponível)\n` +
+          `Aumenta chance de peixes raros!`
+        )
+        .setFooter({ text: "Selecione a isca que deseja usar" })
+        .setTimestamp();
+
+      const basicButton = new ButtonBuilder()
+        .setCustomId(`fish_bait_basic_${userId}`)
+        .setLabel("Isca Básica")
+        .setStyle(ButtonStyle.Secondary)
+        .setEmoji(getEmoji("basic_bait"));
+
+      const premiumButton = new ButtonBuilder()
+        .setCustomId(`fish_bait_premium_${userId}`)
+        .setLabel("Isca Premium")
+        .setStyle(ButtonStyle.Primary)
+        .setEmoji(getEmoji("premium_bait"));
+
+      const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        basicButton,
+        premiumButton,
+      );
+
+      await interaction.editReply({
+        embeds: [selectEmbed],
+        components: [row],
+      });
+      return;
+    }
+
+    // User has only one type of bait - auto-select
+    usePremiumBait = premiumBaitCount > 0;
     const fish = selectFish(usePremiumBait);
     if (!fish) {
       const embed = errorEmbed(

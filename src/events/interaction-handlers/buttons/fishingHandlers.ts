@@ -6,11 +6,12 @@ import {
   ButtonStyle,
 } from "discord.js";
 import { fishingSessionManager } from "../../../utils/fishingSessionManager";
-import { addItem, reduceDurability } from "../../../utils/inventoryManager";
+import { addItem, reduceDurability, getItem, removeItem } from "../../../utils/inventoryManager";
 import { addXp } from "../../../utils/xpManager";
 import { getEmoji } from "../../../utils/customEmojis";
 import { errorEmbed, successEmbed } from "../../../utils/embeds";
 import { transactionLock } from "../../../utils/transactionLock";
+import { FISHES, selectFish } from "../../../commands/fishing/fish";
 
 // Mensagens imersivas de sucesso
 const SUCCESS_MESSAGES = [
@@ -299,5 +300,150 @@ async function updateFishingEmbed(
   await interaction.editReply({
     embeds: [fishEmbed],
     components: [row],
+  });
+}
+
+/**
+ * Handler para seleção de Isca Básica
+ */
+export async function handleFishBaitBasic(interaction: ButtonInteraction): Promise<void> {
+  await startFishingWithBait(interaction, false);
+}
+
+/**
+ * Handler para seleção de Isca Premium
+ */
+export async function handleFishBaitPremium(interaction: ButtonInteraction): Promise<void> {
+  await startFishingWithBait(interaction, true);
+}
+
+/**
+ * Inicia a pesca com a isca selecionada
+ */
+async function startFishingWithBait(interaction: ButtonInteraction, usePremiumBait: boolean): Promise<void> {
+  const userId = interaction.user.id;
+  
+  await interaction.deferUpdate();
+
+  // Verify user still has the selected bait
+  const basicBaitCount = getItem(userId, "basic_bait");
+  const premiumBaitCount = getItem(userId, "premium_bait");
+
+  if (usePremiumBait && premiumBaitCount === 0) {
+    const embed = errorEmbed(
+      `${getEmoji("cancel")} Isca Premium Indisponível`,
+      "Você não tem mais Isca Premium disponível!"
+    );
+    await interaction.editReply({ embeds: [embed], components: [] });
+    return;
+  }
+
+  if (!usePremiumBait && basicBaitCount === 0) {
+    const embed = errorEmbed(
+      `${getEmoji("cancel")} Isca Básica Indisponível`,
+      "Você não tem mais Isca Básica disponível!"
+    );
+    await interaction.editReply({ embeds: [embed], components: [] });
+    return;
+  }
+
+  // Check if user already has an active fishing session
+  const existingSession = fishingSessionManager.getSession(userId);
+  if (existingSession) {
+    const embed = errorEmbed(
+      `${getEmoji("fishing_rod")} Pesca em Andamento`,
+      `Você já está pescando um **${existingSession.fishName}**!`
+    );
+    await interaction.editReply({ embeds: [embed], components: [] });
+    return;
+  }
+
+  // Select a random fish
+  const fish = selectFish(usePremiumBait);
+  if (!fish) {
+    const embed = errorEmbed(
+      "❌ Erro na Pesca",
+      "Ocorreu um erro ao procurar peixes. Tente novamente!"
+    );
+    await interaction.editReply({ embeds: [embed], components: [] });
+    return;
+  }
+
+  // Consume 1 bait
+  if (usePremiumBait) {
+    await removeItem(userId, "premium_bait", 1);
+  } else {
+    await removeItem(userId, "basic_bait", 1);
+  }
+
+  // Create fishing session
+  const session = fishingSessionManager.createSession(
+    userId,
+    interaction.user.username,
+    fish
+  );
+
+  // Generate initial bar
+  const bar = fishingSessionManager.generateBar(userId);
+
+  const baitUsed = usePremiumBait ? `${getEmoji("premium_bait")} Isca Premium` : `${getEmoji("basic_bait")} Isca Básica`;
+  const baitBonus = usePremiumBait ? `\n${getEmoji("sparkles")} **Bônus de Isca Premium ativo!** Mais chances de peixes raros!` : "";
+
+  const fishEmbed = new EmbedBuilder()
+    .setColor(fish.rarityColor as `#${string}`)
+    .setTitle(`${getEmoji("dart")} Pesca Iniciada!`)
+    .setDescription(
+      `Você lançou sua linha com ${baitUsed} e fisgou algo!${baitBonus}\n\n` +
+      `**Peixe Fisgado**\n` +
+      `${fish.emoji} **${fish.name}**\n\n` +
+      `${getEmoji("star")} **Raridade:** ${fish.rarity}\n` +
+      `${getEmoji("lightning")} **Dificuldade:** ${"🔥".repeat(fish.difficulty)}\n` +
+      `${getEmoji("check")} **Acertos Necessários:** ${fish.requiredCatches}\n\n` +
+      `**${getEmoji("info")} COMO JOGAR:**\n` +
+      `Use os botões < e > para manter o 🎣 na zona verde 🟢!\n` +
+      `Acerte a zona ${fish.requiredCatches} vezes para pegar o peixe!\n\n` +
+      `**Barra de Posição:**\n\`\`\`${bar}\`\`\``
+    )
+    .addFields(
+      {
+        name: `${getEmoji("timer")} Status`,
+        value: `${getEmoji("clock")} Tentativas: ${session.attemptsRemaining}/${session.maxAttempts}\n${getEmoji("check")} Acertos: ${session.successfulCatches}/${session.requiredCatches}`,
+        inline: true
+      },
+      {
+        name: `${getEmoji("gift")} Recompensas`,
+        value: `${fish.emoji} ${fish.name}\n${getEmoji("star")} +${fish.experience} XP`,
+        inline: true
+      }
+    )
+    .setFooter({
+      text: `${getEmoji("fishing_rod")} Mantenha o 🎣 na zona verde 🟢 e pressione os botões no momento certo!`
+    })
+    .setTimestamp();
+
+  const leftButton = new ButtonBuilder()
+    .setCustomId(`fish_left_${userId}`)
+    .setLabel("<")
+    .setStyle(ButtonStyle.Secondary);
+
+  const rightButton = new ButtonBuilder()
+    .setCustomId(`fish_right_${userId}`)
+    .setLabel(">")
+    .setStyle(ButtonStyle.Secondary);
+
+  const catchButton = new ButtonBuilder()
+    .setCustomId(`fish_catch_${userId}`)
+    .setLabel("Fisgar")
+    .setStyle(ButtonStyle.Success);
+
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    leftButton,
+    catchButton,
+    rightButton
+  );
+
+  await interaction.editReply({
+    embeds: [fishEmbed],
+    components: [row]
   });
 }
