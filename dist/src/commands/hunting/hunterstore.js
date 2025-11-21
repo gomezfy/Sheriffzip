@@ -94,7 +94,7 @@ const SPECIAL_ITEMS = [
     {
         id: "eagle_feather",
         name: "Pena de Águia",
-        emoji: "🪶",
+        emoji: (0, customEmojis_1.getEmoji)("eagle_feather"),
         price: 2000,
         rarity: "MÍTICO",
         rarityColor: "#d4af37",
@@ -105,7 +105,7 @@ const FISH_ITEMS = [
     {
         id: "catfish",
         name: "Bagre do Rio",
-        emoji: "🐟",
+        emoji: (0, customEmojis_1.getEmoji)("catfish"),
         price: 80,
         rarity: "COMUM",
         rarityColor: "#808080",
@@ -113,7 +113,7 @@ const FISH_ITEMS = [
     {
         id: "silver_trout",
         name: "Truta Prateada",
-        emoji: "🐟",
+        emoji: (0, customEmojis_1.getEmoji)("silver_trout"),
         price: 180,
         rarity: "INCOMUM",
         rarityColor: "#4ade80",
@@ -121,7 +121,7 @@ const FISH_ITEMS = [
     {
         id: "wild_salmon",
         name: "Salmão Selvagem",
-        emoji: "🐟",
+        emoji: (0, customEmojis_1.getEmoji)("wild_salmon"),
         price: 350,
         rarity: "RARO",
         rarityColor: "#3b82f6",
@@ -129,7 +129,7 @@ const FISH_ITEMS = [
     {
         id: "giant_pike",
         name: "Lúcio Gigante",
-        emoji: "🐟",
+        emoji: (0, customEmojis_1.getEmoji)("giant_pike"),
         price: 700,
         rarity: "ÉPICO",
         rarityColor: "#a855f7",
@@ -137,7 +137,7 @@ const FISH_ITEMS = [
     {
         id: "golden_sturgeon",
         name: "Esturjão Dourado",
-        emoji: "🐠",
+        emoji: (0, customEmojis_1.getEmoji)("golden_sturgeon"),
         price: 1200,
         rarity: "LENDÁRIO",
         rarityColor: "#f59e0b",
@@ -145,7 +145,7 @@ const FISH_ITEMS = [
     {
         id: "mythic_western_fish",
         name: "Peixe Mítico do Oeste",
-        emoji: "🐡",
+        emoji: (0, customEmojis_1.getEmoji)("mythic_western_fish"),
         price: 2500,
         rarity: "MÍTICO",
         rarityColor: "#d4af37",
@@ -156,7 +156,7 @@ const SUPPLY_ITEMS = [
     {
         id: "basic_bait",
         name: "Isca Básica",
-        emoji: "🪱",
+        emoji: (0, customEmojis_1.getEmoji)("basic_bait"),
         price: 5,
         rarity: "COMUM",
         rarityColor: "#808080",
@@ -164,7 +164,7 @@ const SUPPLY_ITEMS = [
     {
         id: "premium_bait",
         name: "Isca Premium",
-        emoji: "🦗",
+        emoji: (0, customEmojis_1.getEmoji)("premium_bait"),
         price: 12,
         rarity: "INCOMUM",
         rarityColor: "#4ade80",

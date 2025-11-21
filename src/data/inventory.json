@@ -5,10 +5,10 @@
       "saloon_token": 500000,
       "fishing_rod": 1,
       "silver_trout": 2,
-      "premium_bait": 19,
+      "premium_bait": 18,
       "basic_bait": 50
     },
-    "weight": 8.913,
+    "weight": 8.903,
     "maxWeight": 100,
     "itemDurability": {
       "fishing_rod": 38

@@ -111,7 +111,7 @@ const SPECIAL_ITEMS: HuntItem[] = [
   {
     id: "eagle_feather",
     name: "Pena de Águia",
-    emoji: "🪶",
+    emoji: getEmoji("eagle_feather"),
     price: 2000,
     rarity: "MÍTICO",
     rarityColor: "#d4af37",
@@ -122,7 +122,7 @@ const FISH_ITEMS: HuntItem[] = [
   {
     id: "catfish",
     name: "Bagre do Rio",
-    emoji: "🐟",
+    emoji: getEmoji("catfish"),
     price: 80,
     rarity: "COMUM",
     rarityColor: "#808080",
@@ -130,7 +130,7 @@ const FISH_ITEMS: HuntItem[] = [
   {
     id: "silver_trout",
     name: "Truta Prateada",
-    emoji: "🐟",
+    emoji: getEmoji("silver_trout"),
     price: 180,
     rarity: "INCOMUM",
     rarityColor: "#4ade80",
@@ -138,7 +138,7 @@ const FISH_ITEMS: HuntItem[] = [
   {
     id: "wild_salmon",
     name: "Salmão Selvagem",
-    emoji: "🐟",
+    emoji: getEmoji("wild_salmon"),
     price: 350,
     rarity: "RARO",
     rarityColor: "#3b82f6",
@@ -146,7 +146,7 @@ const FISH_ITEMS: HuntItem[] = [
   {
     id: "giant_pike",
     name: "Lúcio Gigante",
-    emoji: "🐟",
+    emoji: getEmoji("giant_pike"),
     price: 700,
     rarity: "ÉPICO",
     rarityColor: "#a855f7",
@@ -154,7 +154,7 @@ const FISH_ITEMS: HuntItem[] = [
   {
     id: "golden_sturgeon",
     name: "Esturjão Dourado",
-    emoji: "🐠",
+    emoji: getEmoji("golden_sturgeon"),
     price: 1200,
     rarity: "LENDÁRIO",
     rarityColor: "#f59e0b",
@@ -162,7 +162,7 @@ const FISH_ITEMS: HuntItem[] = [
   {
     id: "mythic_western_fish",
     name: "Peixe Mítico do Oeste",
-    emoji: "🐡",
+    emoji: getEmoji("mythic_western_fish"),
     price: 2500,
     rarity: "MÍTICO",
     rarityColor: "#d4af37",
@@ -173,7 +173,7 @@ const SUPPLY_ITEMS: HuntItem[] = [
   {
     id: "basic_bait",
     name: "Isca Básica",
-    emoji: "🪱",
+    emoji: getEmoji("basic_bait"),
     price: 5,
     rarity: "COMUM",
     rarityColor: "#808080",
@@ -181,7 +181,7 @@ const SUPPLY_ITEMS: HuntItem[] = [
   {
     id: "premium_bait",
     name: "Isca Premium",
-    emoji: "🦗",
+    emoji: getEmoji("premium_bait"),
     price: 12,
     rarity: "INCOMUM",
     rarityColor: "#4ade80",
