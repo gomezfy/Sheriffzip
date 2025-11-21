@@ -103,9 +103,11 @@ class FishingSessionManager {
     const session = this.sessions.get(userId);
     if (!session) return null;
 
-    // Check if expired (extend on access)
     const now = Date.now();
-    if (now > session.expiresAt) {
+    
+    // Check for inactivity timeout (5 minutes)
+    const inactivityTime = now - session.lastPlayerInteraction;
+    if (inactivityTime > this.INACTIVITY_TIMEOUT) {
       this.sessions.delete(userId);
       return null;
     }
