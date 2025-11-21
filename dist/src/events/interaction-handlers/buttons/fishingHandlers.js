@@ -10,6 +10,42 @@ const xpManager_1 = require("../../../utils/xpManager");
 const customEmojis_1 = require("../../../utils/customEmojis");
 const embeds_1 = require("../../../utils/embeds");
 const transactionLock_1 = require("../../../utils/transactionLock");
+// Mensagens imersivas de sucesso
+const SUCCESS_MESSAGES = [
+    "🎣 O peixe puxou! Mantendo a linha firme...",
+    "💪 Boa! O peixe entrou na zona! Aguente firme!",
+    "⚡ Acerto! O peixe está resistindo!",
+    "🌊 Perfeito! O peixe se mexeu na zona!",
+    "🎯 Excelente timing! O peixe avançou!",
+    "🪝 Fisga perfeita! O peixe sacode a cauda!",
+];
+// Mensagens imersivas de erro
+const FAILURE_MESSAGES = [
+    "❌ O peixe escapou pela zona! Tente mover mais rápido!",
+    "💔 O peixe se livrou! Melhor sorte na próxima!",
+    "🚫 Errou de novo! O peixe está ficando desconfiado...",
+    "😰 O peixe fugiu da zona! Continue tentando!",
+    "🏃 O peixe correu! Tente novamente!",
+];
+// Mensagens quando o peixe escapa
+const ESCAPE_MESSAGES = [
+    "😱 O peixe foi mais rápido! Conseguiu escapar da vara!",
+    "🌊 SPLASH! O peixe fez um grande salto e desapareceu!",
+    "💨 Ops! O peixe cortou a linha e fugiu para o fundo!",
+    "😤 O peixe teve força demais e conseguiu se soltar!",
+    "🏊 O peixe mergulhou fundo e desapareceu! Que peixe esperto!",
+];
+// Mensagens quando captura o peixe
+const CAPTURE_MESSAGES = [
+    "🎉 PUXÃO FINAL! Você conseguiu pegar o peixe!",
+    "🏆 VENCEU! O peixe está na sua mão!",
+    "⭐ INCRÍVEL! Você dominou o peixe!",
+    "🔥 ÉPICO! A vara resistiu e você capturou!",
+    "🎊 SUCESSO! O peixe está capturado!",
+];
+function getRandomMessage(messages) {
+    return messages[Math.floor(Math.random() * messages.length)];
+}
 /**
  * Handler para mover a barra para a esquerda
  */
@@ -81,12 +117,14 @@ async function handleFishCatch(interaction) {
     if (fishingSessionManager_1.fishingSessionManager.hasWon(userId)) {
         // VITÓRIA - Pegou o peixe! (usar transaction lock)
         const fishItem = session.fishRewards.fish;
+        const captureMessage = getRandomMessage(CAPTURE_MESSAGES);
         await transactionLock_1.transactionLock.withLock(userId, async () => {
             (0, inventoryManager_1.addItem)(userId, fishItem.id, fishItem.amount);
             (0, inventoryManager_1.reduceDurability)(userId, "fishing_rod", 1);
             (0, xpManager_1.addXp)(userId, session.fishExperience);
         });
-        const successEmb = (0, embeds_1.successEmbed)(`${(0, customEmojis_1.getEmoji)("trophy")} Peixe Capturado!`, `🎉 Parabéns! Você pescou um **${session.fishName}**!\n\n` +
+        const successEmb = (0, embeds_1.successEmbed)(`${(0, customEmojis_1.getEmoji)("trophy")} Peixe Capturado!`, `${captureMessage}\n\n` +
+            `Você pescou um **${session.fishName}**! ${session.fishEmoji}\n\n` +
             `**Recompensas:**\n` +
             `${session.fishEmoji} ${session.fishName} x${fishItem.amount}\n` +
             `${(0, customEmojis_1.getEmoji)("star")} +${session.fishExperience} XP\n\n` +
@@ -101,11 +139,12 @@ async function handleFishCatch(interaction) {
     // Verificar se perdeu
     if (fishingSessionManager_1.fishingSessionManager.hasLost(userId)) {
         // DERROTA - Ficou sem tentativas
+        const escapeMessage = getRandomMessage(ESCAPE_MESSAGES);
         const lostEmbed = new discord_js_1.EmbedBuilder()
             .setColor("#ef4444")
             .setTitle("💔 O Peixe Escapou!")
-            .setDescription(`Que pena! O **${session.fishName}** conseguiu escapar...\n\n` +
-            `Você ficou sem tentativas antes de acertar a zona verde vezes suficientes.\n\n` +
+            .setDescription(`${escapeMessage}\n\n` +
+            `Infelizmente, você não conseguiu acertar a zona verde o suficiente.\n\n` +
             `**Estatísticas Finais:**\n` +
             `✅ Acertos: ${session.successfulCatches}/${session.requiredCatches}\n` +
             `❌ Faltaram: ${session.requiredCatches - session.successfulCatches} acertos\n\n` +
@@ -130,10 +169,12 @@ async function updateFishingEmbed(interaction, userId, lastCatchAttempt) {
     let feedbackText = "";
     if (lastCatchAttempt !== undefined) {
         if (lastCatchAttempt) {
-            feedbackText = `\n✅ **ACERTOU A ZONA!** (${session.successfulCatches}/${session.requiredCatches})`;
+            const successMsg = getRandomMessage(SUCCESS_MESSAGES);
+            feedbackText = `\n${successMsg}\n**Acertos:** ${session.successfulCatches}/${session.requiredCatches}`;
         }
         else {
-            feedbackText = `\n❌ **ERROU!** Fora da zona verde.`;
+            const failMsg = getRandomMessage(FAILURE_MESSAGES);
+            feedbackText = `\n${failMsg}`;
         }
     }
     const fishEmbed = new discord_js_1.EmbedBuilder()
