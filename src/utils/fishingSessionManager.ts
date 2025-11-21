@@ -28,7 +28,7 @@ interface FishingSession {
 
 class FishingSessionManager {
   private sessions: Map<string, FishingSession> = new Map();
-  private readonly SESSION_DURATION = 3 * 60 * 1000; // 3 minutes
+  private readonly SESSION_DURATION = 10 * 60 * 1000; // 10 minutes
   private readonly MAX_ATTEMPTS = 15; // 15 tentativas para acertar
   private readonly AUTO_MOVE_INTERVAL = 800; // Move a cada 800ms
   private readonly PAUSE_DURATION = 2500; // Pausa de 2.5s após interação do jogador

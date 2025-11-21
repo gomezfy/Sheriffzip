@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.fishingSessionManager = void 0;
 class FishingSessionManager {
     sessions = new Map();
-    SESSION_DURATION = 3 * 60 * 1000; // 3 minutes
+    SESSION_DURATION = 10 * 60 * 1000; // 10 minutes
     MAX_ATTEMPTS = 15; // 15 tentativas para acertar
     AUTO_MOVE_INTERVAL = 800; // Move a cada 800ms
     PAUSE_DURATION = 2500; // Pausa de 2.5s após interação do jogador
