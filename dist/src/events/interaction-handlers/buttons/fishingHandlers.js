@@ -153,7 +153,7 @@ async function updateFishingEmbed(interaction, userId, lastCatchAttempt) {
         inline: true
     })
         .setFooter({
-        text: `🎣 Use 🔙 e 🔜 para mover, depois pressione ✅ PEGAR quando estiver na zona verde!`
+        text: `🎣 Use < e > para mover, depois pressione Fisgar quando estiver na zona verde!`
     })
         .setTimestamp();
     const leftButton = new discord_js_1.ButtonBuilder()

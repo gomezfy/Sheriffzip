@@ -201,7 +201,7 @@ async function updateFishingEmbed(
       }
     )
     .setFooter({ 
-      text: `🎣 Use 🔙 e 🔜 para mover, depois pressione ✅ PEGAR quando estiver na zona verde!` 
+      text: `🎣 Use < e > para mover, depois pressione Fisgar quando estiver na zona verde!` 
     })
     .setTimestamp();
 

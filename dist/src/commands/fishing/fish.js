@@ -202,7 +202,7 @@ exports.default = {
             `⚡ **Dificuldade:** ${"🔥".repeat(fish.difficulty)}\n` +
             `🎯 **Acertos Necessários:** ${fish.requiredCatches}\n\n` +
             `**${(0, customEmojis_1.getEmoji)("info")} COMO JOGAR:**\n` +
-            `Use os botões 🔙 e 🔜 para manter o 🎣 na zona verde 🟢!\n` +
+            `Use os botões < e > para manter o 🎣 na zona verde 🟢!\n` +
             `Acerte a zona ${fish.requiredCatches} vezes para pegar o peixe!\n\n` +
             `**Barra de Posição:**\n\`\`\`${bar}\`\`\``)
             .addFields({
