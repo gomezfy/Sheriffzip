@@ -213,10 +213,10 @@ export default {
         `${getEmoji("gift")} **Vendemos (você vende para nós):**\n` +
         `🍖 **Carnes** - De coelho a urso\n` +
         `${getEmoji("rabbit_pelt")} **Peles** - Valiosas peles de animais\n` +
-        `🐟 **Peixes** - Do bagre ao peixe mítico\n` +
-        `🪶 **Penas Raras** - Penas de águia dourada\n\n` +
+        `${getEmoji("catfish")} **Peixes** - Do bagre ao peixe mítico\n` +
+        `${getEmoji("eagle_feather")} **Penas Raras** - Penas de águia dourada\n\n` +
         `${getEmoji("shop")} **Compramos (você compra de nós):**\n` +
-        `🪱 **Suprimentos** - Iscas para pesca\n\n` +
+        `${getEmoji("basic_bait")} **Suprimentos** - Iscas para pesca\n\n` +
         `${getEmoji("coin")} Todos os pagamentos são feitos em **moedas de prata**!\n\n` +
         `Selecione uma categoria abaixo:`
       )
@@ -240,19 +240,19 @@ export default {
       .setCustomId(`hunterstore_fish_${userId}`)
       .setLabel("Vender Peixes")
       .setStyle(ButtonStyle.Primary)
-      .setEmoji("🐟");
+      .setEmoji(getEmoji("catfish"));
 
     const specialButton = new ButtonBuilder()
       .setCustomId(`hunterstore_special_${userId}`)
       .setLabel("Vender Penas")
       .setStyle(ButtonStyle.Secondary)
-      .setEmoji("🪶");
+      .setEmoji(getEmoji("eagle_feather"));
 
     const supplyButton = new ButtonBuilder()
       .setCustomId(`hunterstore_supply_${userId}`)
       .setLabel("Comprar Suprimentos")
       .setStyle(ButtonStyle.Danger)
-      .setEmoji("🪱");
+      .setEmoji(getEmoji("basic_bait"));
 
     const row1 = new ActionRowBuilder<ButtonBuilder>().addComponents(
       meatButton,

@@ -190,10 +190,10 @@ exports.default = {
             `${(0, customEmojis_1.getEmoji)("gift")} **Vendemos (você vende para nós):**\n` +
             `🍖 **Carnes** - De coelho a urso\n` +
             `${(0, customEmojis_1.getEmoji)("rabbit_pelt")} **Peles** - Valiosas peles de animais\n` +
-            `🐟 **Peixes** - Do bagre ao peixe mítico\n` +
-            `🪶 **Penas Raras** - Penas de águia dourada\n\n` +
+            `${(0, customEmojis_1.getEmoji)("catfish")} **Peixes** - Do bagre ao peixe mítico\n` +
+            `${(0, customEmojis_1.getEmoji)("eagle_feather")} **Penas Raras** - Penas de águia dourada\n\n` +
             `${(0, customEmojis_1.getEmoji)("shop")} **Compramos (você compra de nós):**\n` +
-            `🪱 **Suprimentos** - Iscas para pesca\n\n` +
+            `${(0, customEmojis_1.getEmoji)("basic_bait")} **Suprimentos** - Iscas para pesca\n\n` +
             `${(0, customEmojis_1.getEmoji)("coin")} Todos os pagamentos são feitos em **moedas de prata**!\n\n` +
             `Selecione uma categoria abaixo:`)
             .setImage("https://i.postimg.cc/BQ11FPd3/IMG-3478.png")
@@ -213,17 +213,17 @@ exports.default = {
             .setCustomId(`hunterstore_fish_${userId}`)
             .setLabel("Vender Peixes")
             .setStyle(discord_js_1.ButtonStyle.Primary)
-            .setEmoji("🐟");
+            .setEmoji((0, customEmojis_1.getEmoji)("catfish"));
         const specialButton = new discord_js_1.ButtonBuilder()
             .setCustomId(`hunterstore_special_${userId}`)
             .setLabel("Vender Penas")
             .setStyle(discord_js_1.ButtonStyle.Secondary)
-            .setEmoji("🪶");
+            .setEmoji((0, customEmojis_1.getEmoji)("eagle_feather"));
         const supplyButton = new discord_js_1.ButtonBuilder()
             .setCustomId(`hunterstore_supply_${userId}`)
             .setLabel("Comprar Suprimentos")
             .setStyle(discord_js_1.ButtonStyle.Danger)
-            .setEmoji("🪱");
+            .setEmoji((0, customEmojis_1.getEmoji)("basic_bait"));
         const row1 = new discord_js_1.ActionRowBuilder().addComponents(meatButton, peltButton, fishButton, specialButton);
         const row2 = new discord_js_1.ActionRowBuilder().addComponents(supplyButton);
         await interaction.editReply({
