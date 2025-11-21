@@ -1,0 +1,73 @@
+<:dart_west:1440185961081212978> **SISTEMA DE CAÇA DO VELHO OESTE** <:cowboy:1440185964684378163>
+
+**Prepare seu rifle e mostre suas habilidades de caçador!**
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📖 **COMO FUNCIONA**
+
+<:rifle_de_caca:1440186058024157236> **Requisito:** Rifle de Caça (compre na `/armaria` por 7.500 <:silver_coin:1440185957675438080>)
+<:dart_west:1440185961081212978> **Modos:** SOLO (5 tentativas) ou DUO (10 minutos em dupla)
+<:timer:1440185990328356955> **Duração:** 5 minutos por sessão solo
+🎲 **Precisão:** 60-100% (aleatória a cada tiro)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🦌 **ANIMAIS & RARIDADES**
+
+<:rabbit_pelt:1440186108024717393> **Coelho Selvagem** (40%) - 50% precisão → 1 <:meat_rex:1441099820793204856> + 1 pele + 25 XP
+<:deer_pelt:1440186102664138772> **Cervo Majestoso** (25%) - 60% precisão → 2 <:meat_rex:1441099820793204856> + 1 pele + 50 XP
+<:wolf_pelt:1440186104392319128> **Lobo Cinzento** (15%) - 70% precisão → 1 <:meat_rex:1441099820793204856> + 1 pele + 75 XP
+<:bison_pelt:1440186106107793428> **Bisão Americano** (10%) - 75% precisão → 3 <:meat_rex:1441099820793204856> + 1 pele + 125 XP
+<:bear_pelt:1440186109970612316> **Urso Pardo** (7%) - 85% precisão → 3 <:meat_rex:1441099820793204856> + 1 pele + 200 XP
+🦅 **Águia Dourada** (3%) - 95% precisão → 1 <:meat_rex:1441099820793204856> + 1 pena + 300 XP
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<:trophy_west:1440185971210453023> **EVENTOS SEMANAIS DE CAÇA**
+
+<:clock:1440185938406805617> **Quando:** Toda Quarta-Feira 18:30 (48h de duração)
+<:stats:1440185966311637063> **Pontos:** 1 Pele = 50pts | 1 <:meat_rex:1441099820793204856> = 20pts
+
+**<:moneybag_west:1440185945478398072> PRÊMIOS TOP 10:**
+
+<:gold_medal:1440185967968256190> **1º lugar:** 250.000 <:silver_coin:1440185957675438080> + 250 <:saloon_token:1440185942999695391> + 3.000 XP
+<:silver_medal:1440185928533672039> **2º lugar:** 150.000 <:silver_coin:1440185957675438080> + 150 <:saloon_token:1440185942999695391> + 1.750 XP
+<:bronze_medal:1440185976369582131> **3º lugar:** 80.000 <:silver_coin:1440185957675438080> + 80 <:saloon_token:1440185942999695391> + 875 XP
+<:stats:1440185966311637063> **4º-10º:** Prêmios progressivos até 5.000 <:silver_coin:1440185957675438080>
+
+Use `/evento` para ver o ranking em tempo real!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<:sparkles_west:1440185997529710663> **DICAS DE OURO**
+
+<:check:1440185955381280822> **Priorize peles nos eventos** (50 pontos vs 20 das carnes)
+<:check:1440185955381280822> **Bisão e Urso dão 3 carnes** = mais pontos!
+<:check:1440185955381280822> **Pena de Águia vale 2.000 <:silver_coin:1440185957675438080>** no /hunterstore
+<:check:1440185955381280822> **Tenha rifles de backup** para não parar de caçar
+<:check:1440185955381280822> **Modo DUO é divertido** e compartilha custos
+<:check:1440185955381280822> **Venda no /hunterstore** para recuperar investimento
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<:silver_coin:1440185957675438080> **PREÇOS /hunterstore (VENDA)**
+
+**<:meat_rex:1441099820793204856> Carnes:** 50 a 800 <:silver_coin:1440185957675438080>
+**🦌 Peles:** 100 a 1.500 <:silver_coin:1440185957675438080>
+**🦅 Pena de Águia:** 2.000 <:silver_coin:1440185957675438080> <:star_west:1440185917645262928>
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎮 **COMANDOS**
+
+`/hunt` - Iniciar caçada
+`/hunt mode:duo partner:@usuario` - Caçar em dupla
+`/hunterstore` - Vender itens
+`/evento` - Ver ranking do evento
+`/armaria` - Comprar rifle
+
+═══════════════════════════════════════
+**<:cowboy:1440185964684378163> BOA SORTE, CAÇADOR! <:dart_west:1440185961081212978>**
+*Próximo evento: Domingo às 21:00*
+═══════════════════════════════════════

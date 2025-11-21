@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": 1763681335162,
+    "type": "ADMIN_COMMAND_USED",
+    "userId": "339772388566892546",
+    "details": {
+      "command": "addsilver",
+      "type": "owner"
+    }
+  },
+  {
+    "timestamp": 1763681337797,
+    "type": "HIGH_VALUE_TRANSACTION",
+    "userId": "339772388566892546",
+    "details": {
+      "type": "silver",
+      "amount": 500000,
+      "action": "admin_add",
+      "targetUser": "339772388566892546",
+      "threshold": 10000
+    }
+  },
+  {
+    "timestamp": 1763681348485,
+    "type": "ADMIN_COMMAND_USED",
+    "userId": "339772388566892546",
+    "details": {
+      "command": "addtokens",
+      "type": "owner"
+    }
+  }
+]

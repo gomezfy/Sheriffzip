@@ -1,0 +1,60 @@
+{
+  "stock": {
+    "wheat": 0,
+    "honey": 0,
+    "cattle": 0
+  },
+  "treasury": 0,
+  "prices": {
+    "wheat": {
+      "buy": 0.16,
+      "sell": 0.1
+    },
+    "honey": {
+      "buy": 38,
+      "sell": 25
+    },
+    "cattle": {
+      "buy": 6710,
+      "sell": 5000
+    }
+  },
+  "statistics": {
+    "hourly": {
+      "wheat": {
+        "sold": 0,
+        "bought": 0,
+        "revenue": 0
+      },
+      "honey": {
+        "sold": 0,
+        "bought": 0,
+        "revenue": 0
+      },
+      "cattle": {
+        "sold": 0,
+        "bought": 0,
+        "revenue": 0
+      }
+    },
+    "total": {
+      "wheat": {
+        "sold": 0,
+        "bought": 0,
+        "revenue": 0
+      },
+      "honey": {
+        "sold": 0,
+        "bought": 0,
+        "revenue": 0
+      },
+      "cattle": {
+        "sold": 0,
+        "bought": 0,
+        "revenue": 0
+      }
+    },
+    "lastReset": "2025-11-21T01:04:00.604Z"
+  },
+  "transactions": []
+}
