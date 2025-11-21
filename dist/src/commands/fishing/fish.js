@@ -135,7 +135,7 @@ exports.default = {
         .setDescription("Pescar nos rios e lagos do Velho Oeste")
         .setContexts([0, 1, 2])
         .setIntegrationTypes([0, 1]), "fish"),
-    cooldown: 90, // 1.5 minutes cooldown
+    cooldown: 10, // 10 seconds cooldown
     async execute(interaction) {
         await interaction.deferReply();
         const userId = interaction.user.id;
