@@ -1,0 +1,62 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const discord_js_1 = require("discord.js");
+const security_1 = require("../../utils/security");
+const inventoryManager_1 = require("../../utils/inventoryManager");
+exports.default = {
+    data: new discord_js_1.SlashCommandBuilder()
+        .setName("setuptoken")
+        .setDescription("[OWNER ONLY] Give a new user starter tokens (100 Saloon Tokens)")
+        .addUserOption((option) => option
+        .setName("user")
+        .setDescription("The new user to give starter tokens to")
+        .setRequired(true))
+        .setDefaultMemberPermissions(0),
+    async execute(interaction) {
+        // Security: Validate owner
+        if (!(await (0, security_1.isOwner)(interaction))) {
+            return;
+        }
+        // Security: Rate limit admin commands
+        if (!security_1.adminRateLimiter.canExecute(interaction.user.id)) {
+            const remaining = security_1.adminRateLimiter.getRemainingCooldown(interaction.user.id);
+            await interaction.reply({
+                content: `⏰ Please wait ${(remaining / 1000).toFixed(1)}s before using another admin command.`,
+                flags: discord_js_1.MessageFlags.Ephemeral,
+            });
+            return;
+        }
+        const targetUser = interaction.options.getUser("user", true);
+        const starterAmount = 100;
+        const inventory = (0, inventoryManager_1.getInventory)(targetUser.id);
+        const currentTokens = inventory.items["saloon_token"] || 0;
+        if (currentTokens >= starterAmount) {
+            await interaction.reply({
+                content: `⚠️ ${targetUser.tag} already has ${currentTokens.toLocaleString()} 🎫 Saloon Tokens. They don't need starter tokens!`,
+                flags: discord_js_1.MessageFlags.Ephemeral,
+            });
+            return;
+        }
+        const result = await (0, inventoryManager_1.addItem)(targetUser.id, "saloon_token", starterAmount);
+        if (!result.success) {
+            await interaction.reply({
+                content: `❌ Failed to add tokens: ${result.error}`,
+                flags: discord_js_1.MessageFlags.Ephemeral,
+            });
+            return;
+        }
+        const embed = new discord_js_1.EmbedBuilder()
+            .setColor("#FFD700")
+            .setTitle("✅ Starter Tokens Given!")
+            .setDescription(`Successfully gave **${starterAmount.toLocaleString()} 🎫** starter tokens to ${targetUser.tag}!`)
+            .addFields({ name: "👤 User", value: `${targetUser}`, inline: true }, {
+            name: "🎫 Amount",
+            value: `${starterAmount.toLocaleString()} Saloon Tokens`,
+            inline: true,
+        })
+            .setFooter({ text: "Welcome gift for new users!" })
+            .setTimestamp();
+        await interaction.reply({ embeds: [embed], flags: discord_js_1.MessageFlags.Ephemeral });
+    },
+};
+//# sourceMappingURL=setuptoken.js.map

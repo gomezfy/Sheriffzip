@@ -1,0 +1,1 @@
+{"version":3,"file":"linked-roles-server.d.ts","sourceRoot":"","sources":["../../src/linked-roles-server.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AASH,QAAA,MAAM,GAAG,6CAAY,CAAC;AAmCtB,OAAO,QAAQ,iBAAiB,CAAC;IAC/B,UAAU,WAAW;QACnB,MAAM,CAAC,EAAE,MAAM,CAAC;QAChB,WAAW,CAAC,EAAE,MAAM,CAAC;QACrB,KAAK,CAAC,EAAE,MAAM,CAAC;KAChB;CACF;AAgzBD,eAAe,GAAG,CAAC"}
