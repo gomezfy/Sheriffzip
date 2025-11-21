@@ -13,6 +13,7 @@ import { errorEmbed, warningEmbed } from "../../utils/embeds";
 import { getItem, removeItem } from "../../utils/inventoryManager";
 import { fishingSessionManager } from "../../utils/fishingSessionManager";
 import { getEmoji } from "../../utils/customEmojis";
+import { getEquippedBait, setEquippedBait } from "./iscar";
 
 interface Fish {
   name: string;
@@ -218,50 +219,21 @@ export default {
       return;
     }
 
-    // Show bait selection if user has both types of bait
+    // Check if user has equipped bait, otherwise use available bait
     let usePremiumBait: boolean;
-    
-    if (basicBaitCount > 0 && premiumBaitCount > 0) {
-      // User has both bait types - show selection menu
-      const selectEmbed = new EmbedBuilder()
-        .setColor("#DAA520")
-        .setTitle(`${getEmoji("basic_bait")} Equipar Isca para Pesca`)
-        .setDescription(
-          `Escolha qual isca deseja equipar:\n\n` +
-          `${getEmoji("basic_bait")} **Isca Básica** - Peixes comuns e incomuns (x${basicBaitCount})\n` +
-          `${getEmoji("premium_bait")} **Isca Premium** ${getEmoji("sparkles")} - Aumenta chance de peixes raros! (x${premiumBaitCount})`
-        )
-        .setFooter({ text: "Selecione a isca abaixo" })
-        .setTimestamp();
+    const equippedBait = getEquippedBait(userId);
 
-      const selectMenu = new StringSelectMenuBuilder()
-        .setCustomId(`fish_select_bait_${userId}`)
-        .setPlaceholder(`${getEmoji("basic_bait")} Selecione uma isca...`)
-        .addOptions(
-          new StringSelectMenuOptionBuilder()
-            .setLabel("Isca Básica")
-            .setDescription(`Peixes comuns e incomuns - Disponível: ${basicBaitCount}`)
-            .setValue("basic")
-            .setEmoji(getEmoji("basic_bait")),
-          new StringSelectMenuOptionBuilder()
-            .setLabel("Isca Premium")
-            .setDescription(`Aumenta chance de peixes raros! - Disponível: ${premiumBaitCount}`)
-            .setValue("premium")
-            .setEmoji(getEmoji("premium_bait"))
-            .setDefault(premiumBaitCount > 0)
-        );
-
-      const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(selectMenu);
-
-      await interaction.editReply({
-        embeds: [selectEmbed],
-        components: [row],
-      });
-      return;
+    if (equippedBait === "premium" && premiumBaitCount > 0) {
+      usePremiumBait = true;
+    } else if (equippedBait === "basic" && basicBaitCount > 0) {
+      usePremiumBait = false;
+    } else if (premiumBaitCount > 0) {
+      usePremiumBait = true;
+      setEquippedBait(userId, "premium");
+    } else {
+      usePremiumBait = false;
+      setEquippedBait(userId, "basic");
     }
-
-    // User has only one type of bait - auto-select
-    usePremiumBait = premiumBaitCount > 0;
     const fish = selectFish(usePremiumBait);
     if (!fish) {
       const embed = errorEmbed(

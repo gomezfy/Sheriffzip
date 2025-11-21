@@ -443,3 +443,27 @@ async function startFishingWithBait(interaction: ButtonInteraction, usePremiumBa
     components: [row]
   });
 }
+
+/**
+ * Handler para seleção de isca equipada (do comando /iscar)
+ */
+export async function handleSelectBaitEquip(interaction: StringSelectMenuInteraction): Promise<void> {
+  const selectedBait = interaction.values[0];
+  const { setEquippedBait } = await import("../../../commands/fishing/iscar");
+  
+  setEquippedBait(interaction.user.id, selectedBait);
+  
+  const baitName = selectedBait === "premium" ? "Isca Premium" : "Isca Básica";
+  const baitEmoji = selectedBait === "premium" ? getEmoji("premium_bait") : getEmoji("basic_bait");
+  
+  const confirmEmbed = new EmbedBuilder()
+    .setColor("#00ff00")
+    .setTitle(`${getEmoji("check")} Isca Equipada!`)
+    .setDescription(
+      `${baitEmoji} **${baitName}** foi equipada com sucesso!\n\n` +
+      `${getEmoji("fishing_rod")} Use \`/fish\` para começar a pescar!`
+    )
+    .setTimestamp();
+  
+  await interaction.update({ embeds: [confirmEmbed], components: [] });
+}

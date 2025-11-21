@@ -8,6 +8,7 @@ const embeds_1 = require("../../utils/embeds");
 const inventoryManager_1 = require("../../utils/inventoryManager");
 const fishingSessionManager_1 = require("../../utils/fishingSessionManager");
 const customEmojis_1 = require("../../utils/customEmojis");
+const iscar_1 = require("./iscar");
 const FISHES = [
     {
         name: "Bagre do Rio",
@@ -171,40 +172,23 @@ exports.default = {
             await interaction.editReply({ embeds: [embed] });
             return;
         }
-        // Show bait selection if user has both types of bait
+        // Check if user has equipped bait, otherwise use available bait
         let usePremiumBait;
-        if (basicBaitCount > 0 && premiumBaitCount > 0) {
-            // User has both bait types - show selection menu
-            const selectEmbed = new discord_js_1.EmbedBuilder()
-                .setColor("#DAA520")
-                .setTitle(`${(0, customEmojis_1.getEmoji)("basic_bait")} Equipar Isca para Pesca`)
-                .setDescription(`Escolha qual isca deseja equipar:\n\n` +
-                `${(0, customEmojis_1.getEmoji)("basic_bait")} **Isca Básica** - Peixes comuns e incomuns (x${basicBaitCount})\n` +
-                `${(0, customEmojis_1.getEmoji)("premium_bait")} **Isca Premium** ${(0, customEmojis_1.getEmoji)("sparkles")} - Aumenta chance de peixes raros! (x${premiumBaitCount})`)
-                .setFooter({ text: "Selecione a isca abaixo" })
-                .setTimestamp();
-            const selectMenu = new discord_js_1.StringSelectMenuBuilder()
-                .setCustomId(`fish_select_bait_${userId}`)
-                .setPlaceholder(`${(0, customEmojis_1.getEmoji)("basic_bait")} Selecione uma isca...`)
-                .addOptions(new discord_js_1.StringSelectMenuOptionBuilder()
-                .setLabel("Isca Básica")
-                .setDescription(`Peixes comuns e incomuns - Disponível: ${basicBaitCount}`)
-                .setValue("basic")
-                .setEmoji((0, customEmojis_1.getEmoji)("basic_bait")), new discord_js_1.StringSelectMenuOptionBuilder()
-                .setLabel("Isca Premium")
-                .setDescription(`Aumenta chance de peixes raros! - Disponível: ${premiumBaitCount}`)
-                .setValue("premium")
-                .setEmoji((0, customEmojis_1.getEmoji)("premium_bait"))
-                .setDefault(premiumBaitCount > 0));
-            const row = new discord_js_1.ActionRowBuilder().addComponents(selectMenu);
-            await interaction.editReply({
-                embeds: [selectEmbed],
-                components: [row],
-            });
-            return;
+        const equippedBait = (0, iscar_1.getEquippedBait)(userId);
+        if (equippedBait === "premium" && premiumBaitCount > 0) {
+            usePremiumBait = true;
         }
-        // User has only one type of bait - auto-select
-        usePremiumBait = premiumBaitCount > 0;
+        else if (equippedBait === "basic" && basicBaitCount > 0) {
+            usePremiumBait = false;
+        }
+        else if (premiumBaitCount > 0) {
+            usePremiumBait = true;
+            (0, iscar_1.setEquippedBait)(userId, "premium");
+        }
+        else {
+            usePremiumBait = false;
+            (0, iscar_1.setEquippedBait)(userId, "basic");
+        }
         const fish = selectFish(usePremiumBait);
         if (!fish) {
             const embed = (0, embeds_1.errorEmbed)("❌ Erro na Pesca", "Ocorreu um erro ao procurar peixes. Tente novamente!");

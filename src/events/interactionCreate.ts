@@ -130,12 +130,12 @@ export = {
 
     // Select Menu Handler
     if (interaction.isStringSelectMenu()) {
-      // Fishing bait selection
-      if (interaction.customId.startsWith("fish_select_bait_")) {
-        const { handleFishSelectBait } = await import(
+      // Fishing bait equip selection
+      if (interaction.customId.startsWith("select_bait_equip_")) {
+        const { handleSelectBaitEquip } = await import(
           "./interaction-handlers/buttons/fishingHandlers"
         );
-        await handleFishSelectBait(interaction);
+        await handleSelectBaitEquip(interaction);
         return;
       }
 

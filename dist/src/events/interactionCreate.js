@@ -82,10 +82,10 @@ module.exports = {
             }
             // Select Menu Handler
             if (interaction.isStringSelectMenu()) {
-                // Fishing bait selection
-                if (interaction.customId.startsWith("fish_select_bait_")) {
-                    const { handleFishSelectBait } = await Promise.resolve().then(() => __importStar(require("./interaction-handlers/buttons/fishingHandlers")));
-                    await handleFishSelectBait(interaction);
+                // Fishing bait equip selection
+                if (interaction.customId.startsWith("select_bait_equip_")) {
+                    const { handleSelectBaitEquip } = await Promise.resolve().then(() => __importStar(require("./interaction-handlers/buttons/fishingHandlers")));
+                    await handleSelectBaitEquip(interaction);
                     return;
                 }
                 // Try ComponentRegistry first (migrated handlers)

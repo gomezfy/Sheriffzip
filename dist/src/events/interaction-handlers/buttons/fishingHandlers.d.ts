@@ -15,4 +15,8 @@ export declare function handleFishCatch(interaction: ButtonInteraction): Promise
  * Handler para menu de seleção de isca
  */
 export declare function handleFishSelectBait(interaction: StringSelectMenuInteraction): Promise<void>;
+/**
+ * Handler para seleção de isca equipada (do comando /iscar)
+ */
+export declare function handleSelectBaitEquip(interaction: StringSelectMenuInteraction): Promise<void>;
 //# sourceMappingURL=fishingHandlers.d.ts.map
