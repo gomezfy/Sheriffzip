@@ -211,7 +211,7 @@ class FishingSessionManager {
         let bar = "🌊";
         for (let i = 0; i < barLength; i++) {
             if (i === position) {
-                bar += "🎣"; // Posição do jogador
+                bar += "<:fishing_rod:1441328804818718720>"; // Azol (Posição do jogador)
             }
             else if (i >= zoneStart && i <= zoneEnd) {
                 bar += "🟩"; // Zona alvo em verde
