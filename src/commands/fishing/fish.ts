@@ -13,7 +13,6 @@ import { errorEmbed, warningEmbed } from "../../utils/embeds";
 import { getItem, removeItem } from "../../utils/inventoryManager";
 import { fishingSessionManager } from "../../utils/fishingSessionManager";
 import { getEmoji } from "../../utils/customEmojis";
-import { getEquippedBait, setEquippedBait } from "./iscar";
 
 interface Fish {
   name: string;
@@ -219,21 +218,8 @@ export default {
       return;
     }
 
-    // Check if user has equipped bait, otherwise use available bait
-    let usePremiumBait: boolean;
-    const equippedBait = getEquippedBait(userId);
-
-    if (equippedBait === "premium" && premiumBaitCount > 0) {
-      usePremiumBait = true;
-    } else if (equippedBait === "basic" && basicBaitCount > 0) {
-      usePremiumBait = false;
-    } else if (premiumBaitCount > 0) {
-      usePremiumBait = true;
-      setEquippedBait(userId, "premium");
-    } else {
-      usePremiumBait = false;
-      setEquippedBait(userId, "basic");
-    }
+    // Select a random fish (premium bait increases chances of rare fish)
+    const usePremiumBait = premiumBaitCount > 0;
     const fish = selectFish(usePremiumBait);
     if (!fish) {
       const embed = errorEmbed(

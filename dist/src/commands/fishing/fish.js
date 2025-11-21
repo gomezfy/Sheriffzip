@@ -8,7 +8,6 @@ const embeds_1 = require("../../utils/embeds");
 const inventoryManager_1 = require("../../utils/inventoryManager");
 const fishingSessionManager_1 = require("../../utils/fishingSessionManager");
 const customEmojis_1 = require("../../utils/customEmojis");
-const iscar_1 = require("./iscar");
 const FISHES = [
     {
         name: "Bagre do Rio",
@@ -172,23 +171,8 @@ exports.default = {
             await interaction.editReply({ embeds: [embed] });
             return;
         }
-        // Check if user has equipped bait, otherwise use available bait
-        let usePremiumBait;
-        const equippedBait = (0, iscar_1.getEquippedBait)(userId);
-        if (equippedBait === "premium" && premiumBaitCount > 0) {
-            usePremiumBait = true;
-        }
-        else if (equippedBait === "basic" && basicBaitCount > 0) {
-            usePremiumBait = false;
-        }
-        else if (premiumBaitCount > 0) {
-            usePremiumBait = true;
-            (0, iscar_1.setEquippedBait)(userId, "premium");
-        }
-        else {
-            usePremiumBait = false;
-            (0, iscar_1.setEquippedBait)(userId, "basic");
-        }
+        // Select a random fish (premium bait increases chances of rare fish)
+        const usePremiumBait = premiumBaitCount > 0;
         const fish = selectFish(usePremiumBait);
         if (!fish) {
             const embed = (0, embeds_1.errorEmbed)("❌ Erro na Pesca", "Ocorreu um erro ao procurar peixes. Tente novamente!");
