@@ -191,7 +191,7 @@ exports.default = {
         // Generate initial bar
         const bar = fishingSessionManager_1.fishingSessionManager.generateBar(userId);
         const baitUsed = usePremiumBait ? `${(0, customEmojis_1.getEmoji)("premium_bait")} Isca Premium` : `${(0, customEmojis_1.getEmoji)("basic_bait")} Isca Básica`;
-        const baitBonus = usePremiumBait ? "\n✨ **Bônus de Isca Premium ativo!** Mais chances de peixes raros!" : "";
+        const baitBonus = usePremiumBait ? `\n${(0, customEmojis_1.getEmoji)("sparkles")} **Bônus de Isca Premium ativo!** Mais chances de peixes raros!` : "";
         const fishEmbed = new discord_js_1.EmbedBuilder()
             .setColor(fish.rarityColor)
             .setTitle(`${(0, customEmojis_1.getEmoji)("dart")} Pesca Iniciada!`)
@@ -199,8 +199,8 @@ exports.default = {
             `**Peixe Fisgado**\n` +
             `${fish.emoji} **${fish.name}**\n\n` +
             `${(0, customEmojis_1.getEmoji)("star")} **Raridade:** ${fish.rarity}\n` +
-            `⚡ **Dificuldade:** ${"🔥".repeat(fish.difficulty)}\n` +
-            `🎯 **Acertos Necessários:** ${fish.requiredCatches}\n\n` +
+            `${(0, customEmojis_1.getEmoji)("lightning")} **Dificuldade:** ${"🔥".repeat(fish.difficulty)}\n` +
+            `${(0, customEmojis_1.getEmoji)("dart")} **Acertos Necessários:** ${fish.requiredCatches}\n\n` +
             `**${(0, customEmojis_1.getEmoji)("info")} COMO JOGAR:**\n` +
             `Use os botões < e > para manter o 🎣 na zona verde 🟢!\n` +
             `Acerte a zona ${fish.requiredCatches} vezes para pegar o peixe!\n\n` +

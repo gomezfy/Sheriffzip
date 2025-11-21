@@ -246,7 +246,7 @@ export default {
     const bar = fishingSessionManager.generateBar(userId);
 
     const baitUsed = usePremiumBait ? `${getEmoji("premium_bait")} Isca Premium` : `${getEmoji("basic_bait")} Isca Básica`;
-    const baitBonus = usePremiumBait ? "\n✨ **Bônus de Isca Premium ativo!** Mais chances de peixes raros!" : "";
+    const baitBonus = usePremiumBait ? `\n${getEmoji("sparkles")} **Bônus de Isca Premium ativo!** Mais chances de peixes raros!` : "";
     
     const fishEmbed = new EmbedBuilder()
       .setColor(fish.rarityColor as `#${string}`)
@@ -256,8 +256,8 @@ export default {
         `**Peixe Fisgado**\n` +
         `${fish.emoji} **${fish.name}**\n\n` +
         `${getEmoji("star")} **Raridade:** ${fish.rarity}\n` +
-        `⚡ **Dificuldade:** ${"🔥".repeat(fish.difficulty)}\n` +
-        `🎯 **Acertos Necessários:** ${fish.requiredCatches}\n\n` +
+        `${getEmoji("lightning")} **Dificuldade:** ${"🔥".repeat(fish.difficulty)}\n` +
+        `${getEmoji("dart")} **Acertos Necessários:** ${fish.requiredCatches}\n\n` +
         `**${getEmoji("info")} COMO JOGAR:**\n` +
         `Use os botões < e > para manter o 🎣 na zona verde 🟢!\n` +
         `Acerte a zona ${fish.requiredCatches} vezes para pegar o peixe!\n\n` +
