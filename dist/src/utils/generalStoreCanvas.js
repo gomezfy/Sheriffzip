@@ -82,7 +82,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
     }
     ctx.fillText(line, x, currentY);
 }
-async function createStoreItemCanvas(item, userTokens, userHasItem) {
+async function createStoreItemCanvas(item, userTokens, userHasItem, userSilver = 0) {
     ensureFontsRegistered();
     const width = 900;
     const height = 750;
@@ -192,16 +192,25 @@ async function createStoreItemCanvas(item, userTokens, userHasItem) {
     ctx.lineWidth = 2;
     drawRoundedRect(ctx, 60, priceBoxY, width - 120, priceBoxHeight, 15);
     ctx.stroke();
-    const saloonTokenPath = path_1.default.join(process.cwd(), 'assets', 'saloon-token.png');
-    if (fs_1.default.existsSync(saloonTokenPath)) {
+    const currency = item.currency || 'tokens';
+    const currencyImagePath = currency === 'silver'
+        ? path_1.default.join(process.cwd(), 'assets', 'silver-coin.png')
+        : path_1.default.join(process.cwd(), 'assets', 'saloon-token.png');
+    let currencyImageLoaded = false;
+    if (fs_1.default.existsSync(currencyImagePath)) {
         try {
-            const tokenImg = await canvasCache_1.canvasCache.loadImageWithCache(saloonTokenPath);
+            const currencyImg = await canvasCache_1.canvasCache.loadImageWithCache(currencyImagePath);
             const tokenSize = 45;
-            ctx.drawImage(tokenImg, width / 2 - 140, priceBoxY + 22, tokenSize, tokenSize);
+            ctx.drawImage(currencyImg, width / 2 - 140, priceBoxY + 22, tokenSize, tokenSize);
+            currencyImageLoaded = true;
         }
         catch (error) {
-            console.error('Error loading saloon token image:', error);
+            console.error('Error loading currency image:', error);
         }
+    }
+    if (!currencyImageLoaded && currency === 'silver') {
+        ctx.font = '40px Nunito-Bold';
+        ctx.fillText('🪙', width / 2 - 120, priceBoxY + 55);
     }
     ctx.fillStyle = lightGold;
     ctx.font = 'bold 48px Nunito-Bold';
@@ -212,8 +221,10 @@ async function createStoreItemCanvas(item, userTokens, userHasItem) {
     ctx.shadowBlur = 0;
     ctx.font = '18px Nunito-SemiBold';
     ctx.fillStyle = '#999';
-    ctx.fillText('Saloon Tokens', width / 2, priceBoxY + 85);
-    if (userTokens < item.price) {
+    const currencyLabel = currency === 'silver' ? 'Moedas de Prata' : 'Saloon Tokens';
+    ctx.fillText(currencyLabel, width / 2, priceBoxY + 85);
+    const userBalance = currency === 'silver' ? userSilver : userTokens;
+    if (userBalance < item.price) {
         const crossEmoji = await loadEmojiImage('CROSS');
         ctx.fillStyle = 'rgba(231, 76, 60, 0.15)';
         ctx.fillRect(0, 0, width, height);
@@ -222,13 +233,14 @@ async function createStoreItemCanvas(item, userTokens, userHasItem) {
         ctx.textAlign = 'center';
         ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
         ctx.shadowBlur = 15;
+        const insufficientText = currency === 'silver' ? 'PRATA INSUFICIENTE' : 'TOKENS INSUFICIENTES';
         if (crossEmoji) {
             const emojiSize = 56;
             ctx.drawImage(crossEmoji, width / 2 - 280, height / 2 - 35, emojiSize, emojiSize);
-            ctx.fillText('TOKENS INSUFICIENTES', width / 2 + 10, height / 2);
+            ctx.fillText(insufficientText, width / 2 + 10, height / 2);
         }
         else {
-            ctx.fillText('❌ TOKENS INSUFICIENTES', width / 2, height / 2);
+            ctx.fillText(`❌ ${insufficientText}`, width / 2, height / 2);
         }
         ctx.shadowBlur = 0;
     }

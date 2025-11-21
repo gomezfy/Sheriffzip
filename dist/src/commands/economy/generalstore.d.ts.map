@@ -1,1 +1,1 @@
-{"version":3,"file":"generalstore.d.ts","sourceRoot":"","sources":["../../../../src/commands/economy/generalstore.ts"],"names":[],"mappings":"AAAA,OAAO,EAEL,2BAA2B,EAK5B,MAAM,YAAY,CAAC;;;yBAcS,2BAA2B,GAAG,OAAO,CAAC,IAAI,CAAC;;AAFxE,wBAuDE"}
+{"version":3,"file":"generalstore.d.ts","sourceRoot":"","sources":["../../../../src/commands/economy/generalstore.ts"],"names":[],"mappings":"AAAA,OAAO,EAEL,2BAA2B,EAK5B,MAAM,YAAY,CAAC;;;yBAeS,2BAA2B,GAAG,OAAO,CAAC,IAAI,CAAC;;AAFxE,wBA2DE"}

@@ -37,6 +37,7 @@ export async function handleGeneralStoreNavigation(
   const item = allItems[newIndex];
   const inventory = getInventory(interaction.user.id);
   const userTokens = inventory.items['saloon_token'] || 0;
+  const userSilver = getUserSilver(interaction.user.id);
   
   let userHasItem = false;
   if (item.category === 'backpacks') {
@@ -45,10 +46,13 @@ export async function handleGeneralStoreNavigation(
     userHasItem = inventory.items[item.id] ? inventory.items[item.id] > 0 : false;
   }
 
-  const canvasBuffer = await createStoreItemCanvas(item, userTokens, userHasItem);
+  const canvasBuffer = await createStoreItemCanvas(item, userTokens, userHasItem, userSilver);
   const attachment = new AttachmentBuilder(canvasBuffer, {
     name: 'store_item.png',
   });
+
+  const currency = item.currency || 'tokens';
+  const userBalance = currency === 'silver' ? userSilver : userTokens;
 
   const row1 = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
@@ -60,7 +64,7 @@ export async function handleGeneralStoreNavigation(
       .setCustomId(`gstore_buy_${item.id}_${newIndex}_${category}`)
       .setLabel(userHasItem ? 'Já Possui' : 'Comprar')
       .setStyle(userHasItem ? ButtonStyle.Secondary : ButtonStyle.Success)
-      .setDisabled(userHasItem || userTokens < item.price),
+      .setDisabled(userHasItem || userBalance < item.price),
     new ButtonBuilder()
       .setCustomId(`gstore_next_${newIndex}_${category}`)
       .setLabel('>')
@@ -99,6 +103,7 @@ export async function handleGeneralStoreCategory(
   
   const inventory = getInventory(interaction.user.id);
   const userTokens = inventory.items['saloon_token'] || 0;
+  const userSilver = getUserSilver(interaction.user.id);
   
   let userHasItem = false;
   if (item.category === 'backpacks') {
@@ -107,10 +112,13 @@ export async function handleGeneralStoreCategory(
     userHasItem = inventory.items[item.id] ? inventory.items[item.id] > 0 : false;
   }
 
-  const canvasBuffer = await createStoreItemCanvas(item, userTokens, userHasItem);
+  const canvasBuffer = await createStoreItemCanvas(item, userTokens, userHasItem, userSilver);
   const attachment = new AttachmentBuilder(canvasBuffer, {
     name: 'store_item.png',
   });
+
+  const currency = item.currency || 'tokens';
+  const userBalance = currency === 'silver' ? userSilver : userTokens;
 
   const row1 = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
@@ -122,7 +130,7 @@ export async function handleGeneralStoreCategory(
       .setCustomId(`gstore_buy_${item.id}_${newIndex}_${newCategory}`)
       .setLabel(userHasItem ? 'Já Possui' : 'Comprar')
       .setStyle(userHasItem ? ButtonStyle.Secondary : ButtonStyle.Success)
-      .setDisabled(userHasItem || userTokens < item.price),
+      .setDisabled(userHasItem || userBalance < item.price),
     new ButtonBuilder()
       .setCustomId(`gstore_next_${newIndex}_${newCategory}`)
       .setLabel('>')

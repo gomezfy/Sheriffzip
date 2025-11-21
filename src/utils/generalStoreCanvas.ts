@@ -105,6 +105,7 @@ export async function createStoreItemCanvas(
   item: GeneralStoreItem,
   userTokens: number,
   userHasItem: boolean,
+  userSilver: number = 0,
 ): Promise<Buffer> {
   ensureFontsRegistered();
 
@@ -240,15 +241,26 @@ export async function createStoreItemCanvas(
   drawRoundedRect(ctx, 60, priceBoxY, width - 120, priceBoxHeight, 15);
   ctx.stroke();
 
-  const saloonTokenPath = path.join(process.cwd(), 'assets', 'saloon-token.png');
-  if (fs.existsSync(saloonTokenPath)) {
+  const currency = item.currency || 'tokens';
+  const currencyImagePath = currency === 'silver' 
+    ? path.join(process.cwd(), 'assets', 'silver-coin.png')
+    : path.join(process.cwd(), 'assets', 'saloon-token.png');
+  
+  let currencyImageLoaded = false;
+  if (fs.existsSync(currencyImagePath)) {
     try {
-      const tokenImg = await canvasCache.loadImageWithCache(saloonTokenPath);
+      const currencyImg = await canvasCache.loadImageWithCache(currencyImagePath);
       const tokenSize = 45;
-      ctx.drawImage(tokenImg, width / 2 - 140, priceBoxY + 22, tokenSize, tokenSize);
+      ctx.drawImage(currencyImg, width / 2 - 140, priceBoxY + 22, tokenSize, tokenSize);
+      currencyImageLoaded = true;
     } catch (error) {
-      console.error('Error loading saloon token image:', error);
+      console.error('Error loading currency image:', error);
     }
+  }
+  
+  if (!currencyImageLoaded && currency === 'silver') {
+    ctx.font = '40px Nunito-Bold';
+    ctx.fillText('🪙', width / 2 - 120, priceBoxY + 55);
   }
 
   ctx.fillStyle = lightGold;
@@ -261,9 +273,11 @@ export async function createStoreItemCanvas(
 
   ctx.font = '18px Nunito-SemiBold';
   ctx.fillStyle = '#999';
-  ctx.fillText('Saloon Tokens', width / 2, priceBoxY + 85);
+  const currencyLabel = currency === 'silver' ? 'Moedas de Prata' : 'Saloon Tokens';
+  ctx.fillText(currencyLabel, width / 2, priceBoxY + 85);
 
-  if (userTokens < item.price) {
+  const userBalance = currency === 'silver' ? userSilver : userTokens;
+  if (userBalance < item.price) {
     const crossEmoji = await loadEmojiImage('CROSS');
     
     ctx.fillStyle = 'rgba(231, 76, 60, 0.15)';
@@ -275,12 +289,13 @@ export async function createStoreItemCanvas(
     ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
     ctx.shadowBlur = 15;
     
+    const insufficientText = currency === 'silver' ? 'PRATA INSUFICIENTE' : 'TOKENS INSUFICIENTES';
     if (crossEmoji) {
       const emojiSize = 56;
       ctx.drawImage(crossEmoji, width / 2 - 280, height / 2 - 35, emojiSize, emojiSize);
-      ctx.fillText('TOKENS INSUFICIENTES', width / 2 + 10, height / 2);
+      ctx.fillText(insufficientText, width / 2 + 10, height / 2);
     } else {
-      ctx.fillText('❌ TOKENS INSUFICIENTES', width / 2, height / 2);
+      ctx.fillText(`❌ ${insufficientText}`, width / 2, height / 2);
     }
     ctx.shadowBlur = 0;
   }

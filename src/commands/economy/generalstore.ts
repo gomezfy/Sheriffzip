@@ -10,6 +10,7 @@ import { applyLocalizations } from '../../utils/commandLocalizations';
 import { getStoreItemsByCategory, getCategoryName } from '../../utils/generalStoreManager';
 import { getInventory } from '../../utils/inventoryManager';
 import { createStoreItemCanvas } from '../../utils/generalStoreCanvas';
+import { getUserSilver } from '../../utils/dataManager';
 
 const commandBuilder = new SlashCommandBuilder()
   .setName('generalstore')
@@ -29,6 +30,7 @@ export default {
     
     const inventory = getInventory(interaction.user.id);
     const userTokens = inventory.items['saloon_token'] || 0;
+    const userSilver = getUserSilver(interaction.user.id);
     
     let userHasItem = false;
     if (item.category === 'backpacks') {
@@ -37,10 +39,13 @@ export default {
       userHasItem = inventory.items[item.id] ? inventory.items[item.id] > 0 : false;
     }
 
-    const canvasBuffer = await createStoreItemCanvas(item, userTokens, userHasItem);
+    const canvasBuffer = await createStoreItemCanvas(item, userTokens, userHasItem, userSilver);
     const attachment = new AttachmentBuilder(canvasBuffer, {
       name: 'store_item.png',
     });
+
+    const currency = item.currency || 'tokens';
+    const userBalance = currency === 'silver' ? userSilver : userTokens;
 
     const row1 = new ActionRowBuilder<ButtonBuilder>().addComponents(
       new ButtonBuilder()
@@ -52,7 +57,7 @@ export default {
         .setCustomId(`gstore_buy_${item.id}_${startIndex}_${category}`)
         .setLabel(userHasItem ? 'Já Possui' : 'Comprar')
         .setStyle(userHasItem ? ButtonStyle.Secondary : ButtonStyle.Success)
-        .setDisabled(userHasItem || userTokens < item.price),
+        .setDisabled(userHasItem || userBalance < item.price),
       new ButtonBuilder()
         .setCustomId(`gstore_next_${startIndex}_${category}`)
         .setLabel('>')
