@@ -632,16 +632,16 @@ export async function handleHunterStoreSupply(
 
   const supplyEmbed = new EmbedBuilder()
     .setColor("#d4af37")
-    .setTitle(`🪱 Hunter's Store - Suprimentos`)
+    .setTitle(`${getEmoji("basic_bait")} Hunter's Store - Suprimentos`)
     .setDescription(
       `Compre suprimentos essenciais para suas aventuras!\n\n` +
       `${getEmoji("coin")} **Seu saldo:** ${userSilver.toLocaleString()} moedas de prata\n\n` +
       `**Iscas disponíveis:**\n\n` +
-      `🪱 **Isca Básica** (COMUM)\n` +
+      `${getEmoji("basic_bait")} **Isca Básica** (COMUM)\n` +
       `├ Preço: ${getEmoji("coin")} **5** moedas/unidade\n` +
       `├ Efeito: Pesca peixes comuns e incomuns\n` +
       `└ Pacote de 10: **50 moedas**\n\n` +
-      `🦗 **Isca Premium** (INCOMUM)\n` +
+      `${getEmoji("premium_bait")} **Isca Premium** (INCOMUM)\n` +
       `├ Preço: ${getEmoji("coin")} **12** moedas/unidade\n` +
       `├ Efeito: ⭐ Aumenta chance de peixes raros, épicos e lendários!\n` +
       `└ Pacote de 10: **120 moedas**\n\n` +
@@ -654,13 +654,13 @@ export async function handleHunterStoreSupply(
     .setCustomId(`hunterstore_buy_basic_bait_${userId}`)
     .setLabel(`10x Isca Básica (50 moedas)`)
     .setStyle(ButtonStyle.Primary)
-    .setEmoji("🪱");
+    .setEmoji(parseCustomEmoji(getEmoji("basic_bait")));
 
   const premiumBaitButton = new ButtonBuilder()
     .setCustomId(`hunterstore_buy_premium_bait_${userId}`)
     .setLabel(`10x Isca Premium (120 moedas)`)
     .setStyle(ButtonStyle.Success)
-    .setEmoji("🦗");
+    .setEmoji(parseCustomEmoji(getEmoji("premium_bait")));
 
   const backButton = new ButtonBuilder()
     .setCustomId(`hunterstore_back_${userId}`)
@@ -725,7 +725,7 @@ export async function handleHunterStoreBuyBasicBait(
     .setTitle(`${getEmoji("check")} Compra Realizada com Sucesso!`)
     .setDescription(
       `Você comprou suprimentos na **Hunter's Store**!\n\n` +
-      `🪱 **Isca Básica**\n` +
+      `${getEmoji("basic_bait")} **Isca Básica**\n` +
       `├ Quantidade comprada: **${quantity}x**\n` +
       `├ Preço unitário: ${getEmoji("coin")} **${pricePerUnit}** moedas\n` +
       `└ Total pago: ${getEmoji("coin")} **${totalCost.toLocaleString()}** moedas de prata\n\n` +
@@ -739,7 +739,7 @@ export async function handleHunterStoreBuyBasicBait(
     .setCustomId(`hunterstore_buy_basic_bait_${userId}`)
     .setLabel(`Comprar Mais (${totalCost} moedas)`)
     .setStyle(ButtonStyle.Success)
-    .setEmoji("🪱");
+    .setEmoji(parseCustomEmoji(getEmoji("basic_bait")));
 
   const backButton = new ButtonBuilder()
     .setCustomId(`hunterstore_back_${userId}`)

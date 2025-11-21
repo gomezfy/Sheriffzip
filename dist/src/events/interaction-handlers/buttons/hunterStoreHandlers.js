@@ -484,15 +484,15 @@ async function handleHunterStoreSupply(interaction) {
     const userSilver = (0, inventoryManager_1.getItem)(userId, "silver");
     const supplyEmbed = new discord_js_1.EmbedBuilder()
         .setColor("#d4af37")
-        .setTitle(`🪱 Hunter's Store - Suprimentos`)
+        .setTitle(`${(0, customEmojis_1.getEmoji)("basic_bait")} Hunter's Store - Suprimentos`)
         .setDescription(`Compre suprimentos essenciais para suas aventuras!\n\n` +
         `${(0, customEmojis_1.getEmoji)("coin")} **Seu saldo:** ${userSilver.toLocaleString()} moedas de prata\n\n` +
         `**Iscas disponíveis:**\n\n` +
-        `🪱 **Isca Básica** (COMUM)\n` +
+        `${(0, customEmojis_1.getEmoji)("basic_bait")} **Isca Básica** (COMUM)\n` +
         `├ Preço: ${(0, customEmojis_1.getEmoji)("coin")} **5** moedas/unidade\n` +
         `├ Efeito: Pesca peixes comuns e incomuns\n` +
         `└ Pacote de 10: **50 moedas**\n\n` +
-        `🦗 **Isca Premium** (INCOMUM)\n` +
+        `${(0, customEmojis_1.getEmoji)("premium_bait")} **Isca Premium** (INCOMUM)\n` +
         `├ Preço: ${(0, customEmojis_1.getEmoji)("coin")} **12** moedas/unidade\n` +
         `├ Efeito: ⭐ Aumenta chance de peixes raros, épicos e lendários!\n` +
         `└ Pacote de 10: **120 moedas**\n\n` +
@@ -503,12 +503,12 @@ async function handleHunterStoreSupply(interaction) {
         .setCustomId(`hunterstore_buy_basic_bait_${userId}`)
         .setLabel(`10x Isca Básica (50 moedas)`)
         .setStyle(discord_js_1.ButtonStyle.Primary)
-        .setEmoji("🪱");
+        .setEmoji(parseCustomEmoji((0, customEmojis_1.getEmoji)("basic_bait")));
     const premiumBaitButton = new discord_js_1.ButtonBuilder()
         .setCustomId(`hunterstore_buy_premium_bait_${userId}`)
         .setLabel(`10x Isca Premium (120 moedas)`)
         .setStyle(discord_js_1.ButtonStyle.Success)
-        .setEmoji("🦗");
+        .setEmoji(parseCustomEmoji((0, customEmojis_1.getEmoji)("premium_bait")));
     const backButton = new discord_js_1.ButtonBuilder()
         .setCustomId(`hunterstore_back_${userId}`)
         .setLabel("Voltar")
@@ -551,7 +551,7 @@ async function handleHunterStoreBuyBasicBait(interaction) {
         .setColor("#10b981")
         .setTitle(`${(0, customEmojis_1.getEmoji)("check")} Compra Realizada com Sucesso!`)
         .setDescription(`Você comprou suprimentos na **Hunter's Store**!\n\n` +
-        `🪱 **Isca Básica**\n` +
+        `${(0, customEmojis_1.getEmoji)("basic_bait")} **Isca Básica**\n` +
         `├ Quantidade comprada: **${quantity}x**\n` +
         `├ Preço unitário: ${(0, customEmojis_1.getEmoji)("coin")} **${pricePerUnit}** moedas\n` +
         `└ Total pago: ${(0, customEmojis_1.getEmoji)("coin")} **${totalCost.toLocaleString()}** moedas de prata\n\n` +
@@ -563,7 +563,7 @@ async function handleHunterStoreBuyBasicBait(interaction) {
         .setCustomId(`hunterstore_buy_basic_bait_${userId}`)
         .setLabel(`Comprar Mais (${totalCost} moedas)`)
         .setStyle(discord_js_1.ButtonStyle.Success)
-        .setEmoji("🪱");
+        .setEmoji(parseCustomEmoji((0, customEmojis_1.getEmoji)("basic_bait")));
     const backButton = new discord_js_1.ButtonBuilder()
         .setCustomId(`hunterstore_back_${userId}`)
         .setLabel("Voltar ao Menu")
