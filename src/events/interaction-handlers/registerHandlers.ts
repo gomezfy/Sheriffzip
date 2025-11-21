@@ -135,11 +135,6 @@ export function registerAllHandlers(): void {
   componentRegistry.registerButtonPattern(/^duo_hunt_end_.+$/, handleDuoHuntEnd);
   
   // Hunter Store handlers
-  componentRegistry.registerButtonPattern(/^hunterstore_meat_.+$/, handleHunterStoreMeat);
-  componentRegistry.registerButtonPattern(/^hunterstore_pelt_.+$/, handleHunterStorePelt);
-  componentRegistry.registerButtonPattern(/^hunterstore_fish_.+$/, handleHunterStoreFish);
-  componentRegistry.registerButtonPattern(/^hunterstore_special_.+$/, handleHunterStoreSpecial);
-  componentRegistry.registerButtonPattern(/^hunterstore_supply_.+$/, handleHunterStoreSupply);
   componentRegistry.registerButtonPattern(/^hunterstore_buy_basic_bait_.+$/, handleHunterStoreBuyBasicBait);
   componentRegistry.registerButtonPattern(/^hunterstore_buy_premium_bait_.+$/, handleHunterStoreBuyPremiumBait);
   componentRegistry.registerButtonPattern(/^hunterstore_back_.+$/, handleHunterStoreBack);

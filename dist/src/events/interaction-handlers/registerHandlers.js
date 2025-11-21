@@ -80,11 +80,6 @@ function registerAllHandlers() {
     interactions_1.componentRegistry.registerButtonPattern(/^duo_hunt_skin_.+$/, huntHandlers_1.handleDuoHuntSkin);
     interactions_1.componentRegistry.registerButtonPattern(/^duo_hunt_end_.+$/, huntHandlers_1.handleDuoHuntEnd);
     // Hunter Store handlers
-    interactions_1.componentRegistry.registerButtonPattern(/^hunterstore_meat_.+$/, hunterStoreHandlers_1.handleHunterStoreMeat);
-    interactions_1.componentRegistry.registerButtonPattern(/^hunterstore_pelt_.+$/, hunterStoreHandlers_1.handleHunterStorePelt);
-    interactions_1.componentRegistry.registerButtonPattern(/^hunterstore_fish_.+$/, hunterStoreHandlers_1.handleHunterStoreFish);
-    interactions_1.componentRegistry.registerButtonPattern(/^hunterstore_special_.+$/, hunterStoreHandlers_1.handleHunterStoreSpecial);
-    interactions_1.componentRegistry.registerButtonPattern(/^hunterstore_supply_.+$/, hunterStoreHandlers_1.handleHunterStoreSupply);
     interactions_1.componentRegistry.registerButtonPattern(/^hunterstore_buy_basic_bait_.+$/, hunterStoreHandlers_1.handleHunterStoreBuyBasicBait);
     interactions_1.componentRegistry.registerButtonPattern(/^hunterstore_buy_premium_bait_.+$/, hunterStoreHandlers_1.handleHunterStoreBuyPremiumBait);
     interactions_1.componentRegistry.registerButtonPattern(/^hunterstore_back_.+$/, hunterStoreHandlers_1.handleHunterStoreBack);
