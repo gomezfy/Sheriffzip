@@ -28,7 +28,8 @@ interface FishingSession {
 
 class FishingSessionManager {
   private sessions: Map<string, FishingSession> = new Map();
-  private readonly SESSION_DURATION = 30 * 60 * 1000; // 30 minutes
+  private readonly SESSION_DURATION = 2 * 60 * 60 * 1000; // 2 hours
+  private readonly INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5 minutes of inactivity
   private readonly MAX_ATTEMPTS = 15; // 15 tentativas para acertar
   private readonly AUTO_MOVE_INTERVAL = 600; // Move a cada 600ms
   private readonly PAUSE_DURATION = 1500; // Pausa de 1.5s após interação do jogador
@@ -102,12 +103,17 @@ class FishingSessionManager {
     const session = this.sessions.get(userId);
     if (!session) return null;
 
-    // Check if expired
-    if (Date.now() > session.expiresAt) {
+    // Check if expired (extend on access)
+    const now = Date.now();
+    if (now > session.expiresAt) {
       this.sessions.delete(userId);
       return null;
     }
 
+    // Auto-extend session on access to prevent timeout
+    session.expiresAt = now + this.SESSION_DURATION;
+    this.sessions.set(userId, session);
+    
     return session;
   }
 
@@ -118,8 +124,10 @@ class FishingSessionManager {
     const session = this.getSession(userId);
     if (!session) return null;
 
+    const now = Date.now();
     session.position = Math.max(0, session.position - 10);
-    session.lastPlayerInteraction = Date.now();
+    session.lastPlayerInteraction = now;
+    session.expiresAt = now + this.SESSION_DURATION; // Extend session on interaction
     session.isPaused = true;
     
     this.sessions.set(userId, session);
@@ -133,8 +141,10 @@ class FishingSessionManager {
     const session = this.getSession(userId);
     if (!session) return null;
 
+    const now = Date.now();
     session.position = Math.min(100, session.position + 10);
-    session.lastPlayerInteraction = Date.now();
+    session.lastPlayerInteraction = now;
+    session.expiresAt = now + this.SESSION_DURATION; // Extend session on interaction
     session.isPaused = true;
     
     this.sessions.set(userId, session);
@@ -148,8 +158,12 @@ class FishingSessionManager {
     const session = this.getSession(userId);
     if (!session) return { success: false, session: null };
 
+    const now = Date.now();
+    
     // Decrementa tentativa ao tentar pegar
     session.attemptsRemaining--;
+    session.lastPlayerInteraction = now;
+    session.expiresAt = now + this.SESSION_DURATION; // Extend session on interaction
 
     const inZone = session.position >= session.targetZone.min && 
                    session.position <= session.targetZone.max;

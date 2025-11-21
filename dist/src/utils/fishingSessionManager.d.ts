@@ -34,6 +34,7 @@ interface FishingSession {
 declare class FishingSessionManager {
     private sessions;
     private readonly SESSION_DURATION;
+    private readonly INACTIVITY_TIMEOUT;
     private readonly MAX_ATTEMPTS;
     private readonly AUTO_MOVE_INTERVAL;
     private readonly PAUSE_DURATION;
