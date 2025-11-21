@@ -305,12 +305,17 @@ async function updateFishingEmbed(
 }
 
 /**
- * Handler para menu de seleção de isca
+ * Handler para seleção de Isca Básica
  */
-export async function handleFishSelectBait(interaction: StringSelectMenuInteraction): Promise<void> {
-  const selectedBait = interaction.values[0];
-  const usePremiumBait = selectedBait === "premium";
-  await startFishingWithBait(interaction as any, usePremiumBait);
+export async function handleFishBaitBasic(interaction: ButtonInteraction): Promise<void> {
+  await startFishingWithBait(interaction, false);
+}
+
+/**
+ * Handler para seleção de Isca Premium
+ */
+export async function handleFishBaitPremium(interaction: ButtonInteraction): Promise<void> {
+  await startFishingWithBait(interaction, true);
 }
 
 /**
