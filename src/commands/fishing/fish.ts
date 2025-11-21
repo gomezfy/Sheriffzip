@@ -5,6 +5,8 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  StringSelectMenuBuilder,
+  StringSelectMenuOptionBuilder,
 } from "discord.js";
 import { applyLocalizations } from "../../utils/commandLocalizations";
 import { errorEmbed, warningEmbed } from "../../utils/embeds";
@@ -223,33 +225,33 @@ export default {
       // User has both bait types - show selection menu
       const selectEmbed = new EmbedBuilder()
         .setColor("#DAA520")
-        .setTitle(`${getEmoji("basic_bait")} Qual Isca Usar?`)
+        .setTitle(`${getEmoji("basic_bait")} Equipar Isca para Pesca`)
         .setDescription(
-          `Escolha qual isca deseja usar para a pesca:\n\n` +
-          `${getEmoji("basic_bait")} **Isca Básica** (${basicBaitCount} disponível)\n` +
-          `Peixes comuns e incomuns\n\n` +
-          `${getEmoji("premium_bait")} **Isca Premium** ${getEmoji("sparkles")} (${premiumBaitCount} disponível)\n` +
-          `Aumenta chance de peixes raros!`
+          `Escolha qual isca deseja equipar:\n\n` +
+          `${getEmoji("basic_bait")} **Isca Básica** - Peixes comuns e incomuns (x${basicBaitCount})\n` +
+          `${getEmoji("premium_bait")} **Isca Premium** ${getEmoji("sparkles")} - Aumenta chance de peixes raros! (x${premiumBaitCount})`
         )
-        .setFooter({ text: "Selecione a isca que deseja usar" })
+        .setFooter({ text: "Selecione a isca abaixo" })
         .setTimestamp();
 
-      const basicButton = new ButtonBuilder()
-        .setCustomId(`fish_bait_basic_${userId}`)
-        .setLabel("Isca Básica")
-        .setStyle(ButtonStyle.Secondary)
-        .setEmoji(getEmoji("basic_bait"));
+      const selectMenu = new StringSelectMenuBuilder()
+        .setCustomId(`fish_select_bait_${userId}`)
+        .setPlaceholder(`${getEmoji("basic_bait")} Selecione uma isca...`)
+        .addOptions(
+          new StringSelectMenuOptionBuilder()
+            .setLabel("Isca Básica")
+            .setDescription(`Peixes comuns e incomuns - Disponível: ${basicBaitCount}`)
+            .setValue("basic")
+            .setEmoji(getEmoji("basic_bait")),
+          new StringSelectMenuOptionBuilder()
+            .setLabel("Isca Premium")
+            .setDescription(`Aumenta chance de peixes raros! - Disponível: ${premiumBaitCount}`)
+            .setValue("premium")
+            .setEmoji(getEmoji("premium_bait"))
+            .setDefault(premiumBaitCount > 0)
+        );
 
-      const premiumButton = new ButtonBuilder()
-        .setCustomId(`fish_bait_premium_${userId}`)
-        .setLabel("Isca Premium")
-        .setStyle(ButtonStyle.Primary)
-        .setEmoji(getEmoji("premium_bait"));
-
-      const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-        basicButton,
-        premiumButton,
-      );
+      const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(selectMenu);
 
       await interaction.editReply({
         embeds: [selectEmbed],

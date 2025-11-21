@@ -3,8 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleFishLeft = handleFishLeft;
 exports.handleFishRight = handleFishRight;
 exports.handleFishCatch = handleFishCatch;
-exports.handleFishBaitBasic = handleFishBaitBasic;
-exports.handleFishBaitPremium = handleFishBaitPremium;
+exports.handleFishSelectBait = handleFishSelectBait;
 const discord_js_1 = require("discord.js");
 const fishingSessionManager_1 = require("../../../utils/fishingSessionManager");
 const inventoryManager_1 = require("../../../utils/inventoryManager");
@@ -241,16 +240,12 @@ async function updateFishingEmbed(interaction, userId, lastCatchAttempt) {
     });
 }
 /**
- * Handler para seleção de Isca Básica
+ * Handler para menu de seleção de isca
  */
-async function handleFishBaitBasic(interaction) {
-    await startFishingWithBait(interaction, false);
-}
-/**
- * Handler para seleção de Isca Premium
- */
-async function handleFishBaitPremium(interaction) {
-    await startFishingWithBait(interaction, true);
+async function handleFishSelectBait(interaction) {
+    const selectedBait = interaction.values[0];
+    const usePremiumBait = selectedBait === "premium";
+    await startFishingWithBait(interaction, usePremiumBait);
 }
 /**
  * Inicia a pesca com a isca selecionada

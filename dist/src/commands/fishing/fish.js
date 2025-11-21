@@ -177,25 +177,26 @@ exports.default = {
             // User has both bait types - show selection menu
             const selectEmbed = new discord_js_1.EmbedBuilder()
                 .setColor("#DAA520")
-                .setTitle(`${(0, customEmojis_1.getEmoji)("basic_bait")} Qual Isca Usar?`)
-                .setDescription(`Escolha qual isca deseja usar para a pesca:\n\n` +
-                `${(0, customEmojis_1.getEmoji)("basic_bait")} **Isca Básica** (${basicBaitCount} disponível)\n` +
-                `Peixes comuns e incomuns\n\n` +
-                `${(0, customEmojis_1.getEmoji)("premium_bait")} **Isca Premium** ${(0, customEmojis_1.getEmoji)("sparkles")} (${premiumBaitCount} disponível)\n` +
-                `Aumenta chance de peixes raros!`)
-                .setFooter({ text: "Selecione a isca que deseja usar" })
+                .setTitle(`${(0, customEmojis_1.getEmoji)("basic_bait")} Equipar Isca para Pesca`)
+                .setDescription(`Escolha qual isca deseja equipar:\n\n` +
+                `${(0, customEmojis_1.getEmoji)("basic_bait")} **Isca Básica** - Peixes comuns e incomuns (x${basicBaitCount})\n` +
+                `${(0, customEmojis_1.getEmoji)("premium_bait")} **Isca Premium** ${(0, customEmojis_1.getEmoji)("sparkles")} - Aumenta chance de peixes raros! (x${premiumBaitCount})`)
+                .setFooter({ text: "Selecione a isca abaixo" })
                 .setTimestamp();
-            const basicButton = new discord_js_1.ButtonBuilder()
-                .setCustomId(`fish_bait_basic_${userId}`)
+            const selectMenu = new discord_js_1.StringSelectMenuBuilder()
+                .setCustomId(`fish_select_bait_${userId}`)
+                .setPlaceholder(`${(0, customEmojis_1.getEmoji)("basic_bait")} Selecione uma isca...`)
+                .addOptions(new discord_js_1.StringSelectMenuOptionBuilder()
                 .setLabel("Isca Básica")
-                .setStyle(discord_js_1.ButtonStyle.Secondary)
-                .setEmoji((0, customEmojis_1.getEmoji)("basic_bait"));
-            const premiumButton = new discord_js_1.ButtonBuilder()
-                .setCustomId(`fish_bait_premium_${userId}`)
+                .setDescription(`Peixes comuns e incomuns - Disponível: ${basicBaitCount}`)
+                .setValue("basic")
+                .setEmoji((0, customEmojis_1.getEmoji)("basic_bait")), new discord_js_1.StringSelectMenuOptionBuilder()
                 .setLabel("Isca Premium")
-                .setStyle(discord_js_1.ButtonStyle.Primary)
-                .setEmoji((0, customEmojis_1.getEmoji)("premium_bait"));
-            const row = new discord_js_1.ActionRowBuilder().addComponents(basicButton, premiumButton);
+                .setDescription(`Aumenta chance de peixes raros! - Disponível: ${premiumBaitCount}`)
+                .setValue("premium")
+                .setEmoji((0, customEmojis_1.getEmoji)("premium_bait"))
+                .setDefault(premiumBaitCount > 0));
+            const row = new discord_js_1.ActionRowBuilder().addComponents(selectMenu);
             await interaction.editReply({
                 embeds: [selectEmbed],
                 components: [row],

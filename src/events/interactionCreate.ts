@@ -109,18 +109,6 @@ export = {
       // ✅ MIGRATED to guildManagement: guild_approve, guild_reject, guild_info, guild_members,
       //    guild_leave, kick_member, promote_member, demote_member
 
-      // Fishing bait selection
-      if (interaction.customId.startsWith("fish_bait_")) {
-        const { handleFishBaitBasic, handleFishBaitPremium } = await import(
-          "./interaction-handlers/buttons/fishingHandlers"
-        );
-        if (interaction.customId.includes("basic")) {
-          await handleFishBaitBasic(interaction);
-        } else if (interaction.customId.includes("premium")) {
-          await handleFishBaitPremium(interaction);
-        }
-        return;
-      }
 
       // Warehouse buttons
       if (
@@ -142,6 +130,15 @@ export = {
 
     // Select Menu Handler
     if (interaction.isStringSelectMenu()) {
+      // Fishing bait selection
+      if (interaction.customId.startsWith("fish_select_bait_")) {
+        const { handleFishSelectBait } = await import(
+          "./interaction-handlers/buttons/fishingHandlers"
+        );
+        await handleFishSelectBait(interaction);
+        return;
+      }
+
       // Try ComponentRegistry first (migrated handlers)
       const handled = await componentRegistry.handleSelectMenu(interaction);
       if (handled) {

@@ -5,12 +5,13 @@
       "saloon_token": 500000,
       "fishing_rod": 1,
       "premium_bait": 1,
-      "basic_bait": 50
+      "basic_bait": 49,
+      "catfish": 1
     },
-    "weight": 4.726,
+    "weight": 6.216,
     "maxWeight": 100,
     "itemDurability": {
-      "fishing_rod": 33
+      "fishing_rod": 32
     },
     "purchasedBackpacks": []
   }

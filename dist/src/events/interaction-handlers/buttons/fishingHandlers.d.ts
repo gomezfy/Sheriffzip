@@ -1,4 +1,4 @@
-import { ButtonInteraction } from "discord.js";
+import { ButtonInteraction, StringSelectMenuInteraction } from "discord.js";
 /**
  * Handler para mover a barra para a esquerda
  */
@@ -12,11 +12,7 @@ export declare function handleFishRight(interaction: ButtonInteraction): Promise
  */
 export declare function handleFishCatch(interaction: ButtonInteraction): Promise<void>;
 /**
- * Handler para seleção de Isca Básica
+ * Handler para menu de seleção de isca
  */
-export declare function handleFishBaitBasic(interaction: ButtonInteraction): Promise<void>;
-/**
- * Handler para seleção de Isca Premium
- */
-export declare function handleFishBaitPremium(interaction: ButtonInteraction): Promise<void>;
+export declare function handleFishSelectBait(interaction: StringSelectMenuInteraction): Promise<void>;
 //# sourceMappingURL=fishingHandlers.d.ts.map
