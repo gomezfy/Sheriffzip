@@ -236,7 +236,7 @@ exports.EMOJI_TEXT = {
     GOLDEN_STURGEON: "🐟",
     SILVER_TROUT: "🐟",
     WILD_SALMON: "🐟",
-    PREMIUM_BAIT: "🪱",
+    PREMIUM_BAIT: "🦗",
     // Emojis adicionais
     SHERIFF_BADGE: "👮",
     DESERT: "🏜️",

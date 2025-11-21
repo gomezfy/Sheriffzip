@@ -153,12 +153,12 @@ exports.default = {
         const premiumBaitCount = (0, inventoryManager_1.getItem)(userId, "premium_bait");
         const hasBait = basicBaitCount > 0 || premiumBaitCount > 0;
         if (!hasBait) {
-            const embed = (0, embeds_1.warningEmbed)("🪱 Isca Necessária", "Você precisa de **Isca** para pescar!\n\n" +
+            const embed = (0, embeds_1.warningEmbed)(`${(0, customEmojis_1.getEmoji)("basic_bait")} Isca Necessária`, "Você precisa de **Isca** para pescar!\n\n" +
                 "💰 Compre iscas no **Hunter's Store** (`/hunterstore`).\n" +
                 "🎣 Cada pesca consome 1 isca.\n\n" +
                 "**Tipos de isca:**\n" +
-                "🪱 **Isca Básica** - Peixes comuns e incomuns\n" +
-                "🦗 **Isca Premium** - Aumenta chance de peixes raros!", "Isca necessária para pescar");
+                `${(0, customEmojis_1.getEmoji)("basic_bait")} **Isca Básica** - Peixes comuns e incomuns\n` +
+                `${(0, customEmojis_1.getEmoji)("premium_bait")} **Isca Premium** - Aumenta chance de peixes raros!`, "Isca necessária para pescar");
             await interaction.editReply({ embeds: [embed] });
             return;
         }
@@ -190,7 +190,7 @@ exports.default = {
         const session = fishingSessionManager_1.fishingSessionManager.createSession(userId, interaction.user.username, fish);
         // Generate initial bar
         const bar = fishingSessionManager_1.fishingSessionManager.generateBar(userId);
-        const baitUsed = usePremiumBait ? "🦗 Isca Premium" : "🪱 Isca Básica";
+        const baitUsed = usePremiumBait ? `${(0, customEmojis_1.getEmoji)("premium_bait")} Isca Premium` : `${(0, customEmojis_1.getEmoji)("basic_bait")} Isca Básica`;
         const baitBonus = usePremiumBait ? "\n✨ **Bônus de Isca Premium ativo!** Mais chances de peixes raros!" : "";
         const fishEmbed = new discord_js_1.EmbedBuilder()
             .setColor(fish.rarityColor)

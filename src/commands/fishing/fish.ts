@@ -188,13 +188,13 @@ export default {
     
     if (!hasBait) {
       const embed = warningEmbed(
-        "🪱 Isca Necessária",
+        `${getEmoji("basic_bait")} Isca Necessária`,
         "Você precisa de **Isca** para pescar!\n\n" +
           "💰 Compre iscas no **Hunter's Store** (`/hunterstore`).\n" +
           "🎣 Cada pesca consome 1 isca.\n\n" +
           "**Tipos de isca:**\n" +
-          "🪱 **Isca Básica** - Peixes comuns e incomuns\n" +
-          "🦗 **Isca Premium** - Aumenta chance de peixes raros!",
+          `${getEmoji("basic_bait")} **Isca Básica** - Peixes comuns e incomuns\n` +
+          `${getEmoji("premium_bait")} **Isca Premium** - Aumenta chance de peixes raros!`,
         "Isca necessária para pescar",
       );
 
@@ -245,7 +245,7 @@ export default {
     // Generate initial bar
     const bar = fishingSessionManager.generateBar(userId);
 
-    const baitUsed = usePremiumBait ? "🦗 Isca Premium" : "🪱 Isca Básica";
+    const baitUsed = usePremiumBait ? `${getEmoji("premium_bait")} Isca Premium` : `${getEmoji("basic_bait")} Isca Básica`;
     const baitBonus = usePremiumBait ? "\n✨ **Bônus de Isca Premium ativo!** Mais chances de peixes raros!" : "";
     
     const fishEmbed = new EmbedBuilder()
